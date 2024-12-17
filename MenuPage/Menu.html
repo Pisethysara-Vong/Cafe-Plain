@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        />
+    <title>Menu</title>
+    <link rel="stylesheet" href="Menu.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+        <img src="/Brocode/CafeShop/assets/image.png" class="navbar-logo" alt="logo" height="80px" />
+        </div>
+        <div class="title">Cafe Plain</div>
+        <ul class="navbar-list">
+            <li><a href="/Brocode/CafeShop/HomePage/home.html">Home</a></li>
+            <li><a href="#">Menu</a></li>
+            <li><a href="/Brocode/CafeShop/NewsPage/News.html">News</a></li>
+            <li><a href="/Brocode/CafeShop/ReservationPage/Reservation.html">Reservation</a></li>
+        </ul>
+
+        <div class="profile-dropdown">
+            <div onclick="toggle()" class="profile-dropdown-btn">
+            <div class="profile-img">
+                <i class="fa-solid fa-circle"></i>
+            </div>
+
+            <span
+                >Victoria
+                <i class="fa-solid fa-angle-down"></i>
+            </span>
+            </div>
+
+            <ul class="profile-dropdown-list">
+            <li class="profile-dropdown-list-item">
+                <a href="#">
+                <i class="fa-regular fa-user"></i>
+                Edit Profile
+                </a>
+            </li>
+
+            <li class="profile-dropdown-list-item">
+                <a href="#">
+                <i class="fa-regular fa-envelope"></i>
+                Inbox
+                </a>
+            </li>
+
+            <li class="profile-dropdown-list-item">
+                <a href="#">
+                <i class="fa-solid fa-chart-line"></i>
+                Analytics
+                </a>
+            </li>
+
+            <li class="profile-dropdown-list-item">
+                <a href="#">
+                <i class="fa-solid fa-sliders"></i>
+                Settings
+                </a>
+            </li>
+
+            <li class="profile-dropdown-list-item">
+                <a href="#">
+                <i class="fa-regular fa-circle-question"></i>
+                Help & Support
+                </a>
+            </li>
+            <hr />
+
+            <li class="profile-dropdown-list-item">
+                <a href="#">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                Log out
+                </a>
+            </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <h2>
+        Cold Drinks
+        <div class="cart">
+            <a href="cart.html">🛒</a>
+        </div>
+    </h2>
+    
+    <div class="wrapper" id="wrapper"></div>
+
+    <script src="menu.js"></script>
+</body>
+</html>

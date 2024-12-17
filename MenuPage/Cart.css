@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap");
+
+* {
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    margin: 0px;
+}
+
+
+/* General styling for each cart item */
+#cart-items {
+    padding: 10px;
+    margin: 10px;
+    margin-left: 30px;
+    font-size: 1.2rem;
+}
+
+li {
+    padding: 10px;
+}
+
+#customization {
+    font-size: 0.8em;
+    color: gray;
+    padding-top: 5px;
+}
+
+#quantity {
+    font-size: 1.2rem;
+}
+
+/* Styling for the quantity control buttons */
+.quantity-control {
+    float: right;
+    margin-right: 1000px;
+    margin-top: 10px;
+}
+
+.quantity-control button {
+    margin-left: 8px;
+    margin-right: 8px;
+    width: 30px;
+    height: 30px;
+    font-size: 1.1rem;
+    border-radius: 50%;
+}
+
+h1{
+    color: rgb(34, 34, 34);
+    margin-left: 10px;
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+h1 a {
+    font-size: 1.5rem;
+    text-decoration: none; /* Removes the underline */
+}
+
+a:visited {
+    text-decoration: none
+}
+
+a:hover{
+    cursor: pointer;
+    background-color: rgb(202, 202, 202);
+    border-radius: 48%;
+}
+
+h2{
+    color: rgb(34, 34, 34);
+    margin-left: 20px;
+    margin-bottom: 0px;
+    font-size: 1.5rem;
+    margin-left: 20px;
+}
+
+#checkout-btn{
+    color: white;
+    background-color: rgb(0, 170, 0);
+    border-radius: 25px;
+    width: 100px;
+    padding: 10px 10px;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-left: 40px;
+}
+
+#checkout-btn:hover{
+    cursor: pointer;
+    background-color: rgb(0, 125, 0);
+}
+
+#clear-cart-btn{
+    color: white;
+    background-color: red   ;
+    border-radius: 25px;
+    width: 100px;
+    padding: 10px 10px;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-left: 10px;
+}
+
+#clear-cart-btn:hover{
+    cursor: pointer;
+    background-color: rgb(192, 0, 0);
+}
+
+#total-amount {
+    margin: 0;
+}
+
+.checkoutInfo {
+    align-items: center;
+    display: flex;
+    width: 100%;
+    position: fixed;
+    bottom: 0px;
+    padding: 20px;
+    background-color: #eeeeee;
+    
+}
+
+p {
+    height: 320px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: gray;
+    font-size: 1.2rem;
+}
