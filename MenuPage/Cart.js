@@ -1,3 +1,40 @@
+const sideBar = document.getElementById('sidebar');
+const profile = document.getElementById('profile-img');
+const mediaQuery = window.matchMedia("(max-width: 800px)");
+
+function toggleSubMenu(button){
+    if (!button.nextElementSibling.classList.contains('show')){
+        closeAllSubMenus();
+    }
+    button.nextElementSibling.classList.toggle('show');
+    button.classList.toggle('rotate');
+
+    if (sideBar.classList.contains('close')){
+        toggleSideBar();
+    }
+}
+
+function toggleSideBar(){
+    closeAllSubMenus();
+    sideBar.classList.toggle('close');
+}
+
+function closeAllSubMenus(){
+    Array.from(sideBar.getElementsByClassName('show')).forEach(dropDown => {
+        dropDown.classList.remove('show');
+        dropDown.previousElementSibling.classList.remove('rotate');
+    })
+}
+
+function handleScreenChange(e) {
+    if (e.matches && sideBar.classList.contains('close')) {
+        toggleSideBar();
+    }
+}
+
+mediaQuery.addEventListener("change", handleScreenChange);
+
+
 // Retrieve cart data from localStorage
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -10,23 +47,32 @@ function renderCart() {
     let total = 0;
 
     if (cart.length === 0) {
-        const emptyCart = document.createElement('p')
-        emptyCart.innerHTML = `🛒 Your cart is empty`
+        const emptyCart = document.createElement('p');
+        emptyCart.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                <path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/>
+            </svg>
+            <span>Your cart is empty</span>
+        `;
         cartItems.appendChild(emptyCart);
     } else {
-        cart.forEach((item, index) => {
+        for (let index = 0; index < cart.length; index++) {
+            const item = cart[index];
             total += item.price * item.quantity;
+
             const li = document.createElement('li');
             li.innerHTML = `
-                <span id="name-price">${item.name} - $${item.price.toFixed(2)}</span>
+                <div id="name-price">
+                    ${item.name} - $${item.price.toFixed(2)}
+                    <div id="customization">Size: ${item.size} - Ice: ${item.ice}% - Sugar: ${item.sugar}%</div>
+                </div>
                 <div class="quantity-control">
                     <button onclick="updateQuantity(${index}, -1)">–</button>
-                    <span id="quantity">${item.quantity}</span>
+                    <span class="quantity">${item.quantity}</span>
                     <button onclick="updateQuantity(${index}, 1)">+</button>
-                </div>
-                <div id="customization">Size: ${item.size} - Ice: ${item.ice}% - Sugar: ${item.sugar}%</div>`;
+                </div>`;
             cartItems.appendChild(li);
-        });
+        }
     }
 
     totalAmount.textContent = `Total: $${total.toFixed(2)}`;
@@ -34,10 +80,9 @@ function renderCart() {
 
 // Function to update quantity
 function updateQuantity(index, change) {
-    if (cart[index].quantity + change == 0) {
+    if (cart[index].quantity + change === 0) {
         removeItem(index);
-    }
-    else {
+    } else {
         cart[index].quantity += change;
         localStorage.setItem('cart', JSON.stringify(cart)); // Update cart in localStorage
         renderCart(); // Re-render the cart
@@ -58,16 +103,17 @@ function clearCart() {
     renderCart(); // Re-render the cart
 }
 
-// Function to handle checkout (you can redirect to another page or do further processing)
+// Function to handle checkout
 function checkout() {
+    receipts.push(cart);
+    localStorage.setItem('receipts', JSON.stringify(receipts));
     alert("Your order has been placed.");
     clearCart();
-    // Additional checkout logic can be added here
 }
 
 // Ensure cart is persisted across pages using localStorage
 window.onload = function() {
-    // Retrieve cart from localStorage
     cart = JSON.parse(localStorage.getItem('cart')) || [];
+    receipts = JSON.parse(localStorage.getItem('receipts')) || [];
     renderCart();
 };

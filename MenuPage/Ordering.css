@@ -5,14 +5,15 @@
 }
 
 .ordering-container{
-    padding: 0px;
+    padding: 5px;
+    margin: 0;
     border-radius: 10px;
     text-align: left;
 }
 
 .container{
     width: 350px;
-    height: 455px;
+    height: 450px;
     margin-left: 150px;
     margin-top: 30px;
     margin-right: 100px;
@@ -22,9 +23,15 @@
     float: left;
 }
 
+.section-container {
+    text-align: left;
+    margin-top: 25px;
+}
+
 .image{
     width: 337px;
     padding: 7px;
+    padding-bottom: 0;
     height: 370px;
 }
 
@@ -36,47 +43,62 @@
 
 .text{
     text-align: left;
-    margin-left: 25px;
+    padding-left: 10px;
     display: inline-block;
-    margin-top: 0px;
     font-size: 1.3rem;
     text-decoration: none;
     color: rgb(34, 34, 34);
+    font-weight: 600;
 }
 
 .quantity-control{
-    display: inline-block;
     float: right;
 }
 
 body{
     background-color: rgb(255, 255, 255);
+    padding: 0;
+    margin: 0;
+    padding: 0px 20px;
 }
 
-h1{
-    color: rgb(34, 34, 34);
-    margin-left: 20px;
-    font-size: 3rem;
-    margin-bottom: 15px;
-}
 
 h2{
     color: rgb(34, 34, 34);
-    margin-left: 20px;
-    margin-bottom: 0px;
-    font-size: 1.7rem;
-    margin-top: 20px;
+    font-size: 2rem;
+    align-items: center;
 }
 
-h2 a{
+#header {
+    margin: 0;
+    padding: 8px 0px;
+}
+a {
     text-decoration: none;
-    margin-right: 20px;
 }
 
-h2 a:hover{
+h2 svg {
+    fill: black;
+    position: relative;
+    margin: 0;
+    top: 7px;
+    left: -5px;
+    font-size: 1.2em;
     cursor: pointer;
-    background-color: rgb(202, 202, 202);
-    border-radius: 48%;
+    border-radius: 10px;
+    padding: 5px;
+    transition: background-color 0.15s ease-in;
+}
+
+h2 svg:hover {
+    background-color: #dedede;
+}
+
+#section-title {
+    padding: 0;
+    margin: 0;
+    margin: 10px 0px;
+    font-size: 1.8rem;
 }
 
 .options {
@@ -87,8 +109,8 @@ h2 a:hover{
 }
 
 .options li{
-    padding: 15px;
-    padding-left: 0px;
+    padding: 0;
+    padding-right: 25px;
     font-size: 1.2rem;
 }
 
@@ -110,18 +132,30 @@ h2 a:hover{
     margin-top: 20px;
     margin-right: 10px;
     margin-left: 0;
-}
-
-button{
     color: white;
     background-color: rgb(0, 170, 0);
-    border-radius: 25px;
-    width: 200px;
-    padding: 10px 10px;
+    border: none;
+}
+
+.cart-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: rgb(0, 170, 0);
+    border-radius: 15px;
+    border: white;
+    padding: 10px;
     font-size: 1.2rem;
     text-align: center;
-    margin-left: 55px;
-    margin-top: 10px;
+    position: relative;
+    left: 180px;
+    bottom: 45px;
+    gap: .4em;
+}
+
+svg {
+    fill: white;
 }
 
 button:hover{
@@ -141,18 +175,19 @@ button:hover{
     margin-top: 0;
 }
 
-#total-amount{
-    font-size: 1.5em;
-    margin-left: 23px;
-    margin-top: 100px;
-}
-
 #price{
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0;
 }
 
 #cart-items{
     font-size: 1.2em;
     margin-left: 0px;
     margin-top: 0px;
+}
+
+.info {
+    padding: 0;
+    margin-top: 98px;
 }

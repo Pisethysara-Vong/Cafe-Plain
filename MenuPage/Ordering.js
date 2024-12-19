@@ -54,6 +54,7 @@ function handleQuantityChange(change) {
 // Function to add item to cart and store it in localStorage
 function addToCart() {
     const sizeAdjustments = {
+        "option1_size": 0.00,
         "option2_size": 0.50, // Medium
         "option3_size": 1.00  // Large
     };
@@ -94,7 +95,7 @@ function addToCart() {
     sugar = getAdjustment('.sugar-answer', sugarOptions)
 
     if (size == '' || ice == 0 || sugar == 0) {
-        alert("Please select one of the options")
+        alert("Please select one option from each category.")
     }
     else {
         cart.push({ name, price, quantity, size, ice, sugar });

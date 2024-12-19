@@ -1,4 +1,3 @@
-
 let selectedItem = {};
 
 const menuItems = [
@@ -41,6 +40,11 @@ const menuItems = [
         name: "Iced Mocha",
         price: "1.50$",
         image: "https://feynman.coffee/cdn/shop/products/IcedMocha-01_2048x.jpg?v=1617701624"
+    },
+    {
+        name: "Iced Mocha",
+        price: "1.50$",
+        image: "https://feynman.coffee/cdn/shop/products/IcedMocha-01_2048x.jpg?v=1617701624"
     }
 ]
 
@@ -57,7 +61,7 @@ function renderPage(){
                 ${item.name}
                 <!-- Pass ID and Name as URL parameters -->
                 <a href="OrderingTemplate.html">
-                    <button onclick="clickedItem('${item.name}', '${item.price}', '${item.image}')">+</button>
+                    <button onclick="clickedItem('${item.name}', '${item.price}', '${item.image}')" class="order-btn">+</button>
                 </a>
                 <br>
                 ${item.price}
@@ -79,17 +83,41 @@ function clearLocalStorage(){
     localStorage.setItem('selectedItem', JSON.stringify(selectedItem));
 }
 
-let profileDropdownList = document.querySelector(".profile-dropdown-list");
-let btn = document.querySelector(".profile-dropdown-btn");
+const sideBar = document.getElementById('sidebar');
+const profile = document.getElementById('profile-img');
+const mediaQuery = window.matchMedia("(max-width: 800px)");
 
-let classList = profileDropdownList.classList;
+function toggleSubMenu(button){
+    if (!button.nextElementSibling.classList.contains('show')){
+        closeAllSubMenus();
+    }
+    button.nextElementSibling.classList.toggle('show');
+    button.classList.toggle('rotate');
 
-const toggle = () => classList.toggle("active");
+    if (sideBar.classList.contains('close')){
+        toggleSideBar();
+    }
+}
 
-window.addEventListener("click", function (e) {
-    if (!btn.contains(e.target)) classList.remove("active");
-});
+function toggleSideBar(){
+    closeAllSubMenus();
+    sideBar.classList.toggle('close');
+}
 
+function closeAllSubMenus(){
+    Array.from(sideBar.getElementsByClassName('show')).forEach(dropDown => {
+        dropDown.classList.remove('show');
+        dropDown.previousElementSibling.classList.remove('rotate');
+    })
+}
+
+function handleScreenChange(e) {
+    if (e.matches && sideBar.classList.contains('close')) {
+        toggleSideBar();
+    }
+}
+
+mediaQuery.addEventListener("change", handleScreenChange);
 
 
 window.onload = function() {

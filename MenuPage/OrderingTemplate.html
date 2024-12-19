@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="Ordering.css">
 </head>
 <body>
-    <h1>Café Plain</h1>
-    <h2>
-        <a href="Menu.html">←</a>
-        Order
+    <h2 id="header">
+        <a href="/Brocode/CafeShop/MenuPage/Menu.html">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
+        </a>
+        <span>Customization</span>
     </h2>
+    <hr color="black">
 
     <div class="container">
         <div id="Img" class="image"></div>
@@ -25,7 +27,7 @@
 
     <div class="ordering-container">
         <div class="section-container">
-            <h2 id="size">Size</h2>
+            <h2 id="section-title">Size</h2>
             <ul class="options">
                 <li>
                     <input type="radio" name="size" id="option1_size" class="size-answer">
@@ -43,7 +45,7 @@
         </div>
         
         <div class="section-container">
-            <h2 id="ice">Ice</h2>
+            <h2 id="section-title">Ice</h2>
             <ul class="options">
                 <li>
                     <input type="radio" name="ice" id="option1_ice" class="ice-answer">
@@ -65,7 +67,7 @@
         </div>
         
         <div class="section-container">
-            <h2 id="sugar">Sugar</h2>
+            <h2 id="section-title">Sugar</h2>
             <ul class="options">
                 <li>
                     <input type="radio" name="sugar" id="option1_sugar" class="sugar-answer">
@@ -86,8 +88,15 @@
             </ul>
         </div>
         
-        <p id="price">Price: $0.00</p>
-        <button onclick="addToCart()">🛒 Add to cart</button>
+        <div class="info">
+            <p id="price">Price: $0.00</p>
+        </div>
+        <button onclick="addToCart()" class="cart-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/></svg>
+            <span>
+                Add to cart
+            </span>
+        </button>
     </div>
 
     <script src="Ordering.js"></script>

@@ -1,10 +1,35 @@
-let profileDropdownList = document.querySelector(".profile-dropdown-list");
-let btn = document.querySelector(".profile-dropdown-btn");
+const sideBar = document.getElementById('sidebar');
+const profile = document.getElementById('profile-img');
+const mediaQuery = window.matchMedia("(max-width: 800px)");
 
-let classList = profileDropdownList.classList;
+function toggleSubMenu(button){
+    if (!button.nextElementSibling.classList.contains('show')){
+        closeAllSubMenus();
+    }
+    button.nextElementSibling.classList.toggle('show');
+    button.classList.toggle('rotate');
 
-const toggle = () => classList.toggle("active");
+    if (sideBar.classList.contains('close')){
+        toggleSideBar();
+    }
+}
 
-window.addEventListener("click", function (e) {
-    if (!btn.contains(e.target)) classList.remove("active");
-});
+function toggleSideBar(){
+    closeAllSubMenus();
+    sideBar.classList.toggle('close');
+}
+
+function closeAllSubMenus(){
+    Array.from(sideBar.getElementsByClassName('show')).forEach(dropDown => {
+        dropDown.classList.remove('show');
+        dropDown.previousElementSibling.classList.remove('rotate');
+    })
+}
+
+function handleScreenChange(e) {
+    if (e.matches && sideBar.classList.contains('close')) {
+        toggleSideBar();
+    }
+}
+
+mediaQuery.addEventListener("change", handleScreenChange);
