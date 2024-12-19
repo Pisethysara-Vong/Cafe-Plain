@@ -56,10 +56,8 @@ function renderCart() {
         `;
         cartItems.appendChild(emptyCart);
     } else {
-        for (let index = 0; index < cart.length; index++) {
-            const item = cart[index];
+        cart.forEach((item, index) => {
             total += item.price * item.quantity;
-
             const li = document.createElement('li');
             li.innerHTML = `
                 <div id="name-price">
@@ -72,7 +70,7 @@ function renderCart() {
                     <button onclick="updateQuantity(${index}, 1)">+</button>
                 </div>`;
             cartItems.appendChild(li);
-        }
+        });
     }
 
     totalAmount.textContent = `Total: $${total.toFixed(2)}`;
@@ -107,6 +105,14 @@ function clearCart() {
 function checkout() {
     receipts.push(cart);
     localStorage.setItem('receipts', JSON.stringify(receipts));
+
+    const date = '12/19/24';
+    cart.push({date});
+    localStorage.setItem('cart', JSON.stringify(cart));
+    cart = JSON.parse(localStorage.getItem('cart')) || [];
+    receiptsHistory.push(cart);
+    localStorage.setItem('receiptsHistory', JSON.stringify(receiptsHistory));
+
     alert("Your order has been placed.");
     clearCart();
 }
@@ -115,5 +121,7 @@ function checkout() {
 window.onload = function() {
     cart = JSON.parse(localStorage.getItem('cart')) || [];
     receipts = JSON.parse(localStorage.getItem('receipts')) || [];
+    receiptsHistory = JSON.parse(localStorage.getItem('receiptsHistory')) || [];
+
     renderCart();
 };

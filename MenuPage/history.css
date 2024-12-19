@@ -10,14 +10,9 @@
 }
 
 .receipt {
-  background-color: white;
-  border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 25px;
-  display: flex;
-  align-items: center;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-  
+    padding: 0px;
+    display: flex;
+    align-items: center;
 }
 
 .history {
@@ -30,7 +25,7 @@
   }
 
   .date {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     font-weight: 500;
     font-size: 1.2em;
   }
@@ -71,8 +66,9 @@
   font-size: 1.4rem;
   align-items: center;
   text-align: right;
+  margin-left: auto;
   position: relative;
-  left: 680px
+  bottom: 15px;
 }
 
 h2{
