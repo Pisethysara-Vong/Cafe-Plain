@@ -237,7 +237,7 @@ main {
 #cart-container {
     padding: 10px;
     margin: 5px;
-    margin-top: 15px;
+    margin-top: 13px;
     font-size: 1.2rem;
 }
 
@@ -269,10 +269,12 @@ main {
 
 #title{
     color: rgb(34, 34, 34);
-    padding-left: 15px;
-    padding-top: 25px;
+    margin-top: 25px;
     margin-bottom: 0px;
+    margin-left: 15px;
     font-size: 1.5rem;
+    display: flex;
+    align-items: center;
 }
 
 #name-price {
@@ -356,4 +358,5 @@ main {
 
 #line-break {
     margin: 0px 15px;
+    margin-top: 24px;
 }

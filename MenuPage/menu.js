@@ -70,6 +70,7 @@ function renderPage(){
         items.insertAdjacentHTML('beforeend', template);
 
     });
+    addDropdownToggleListener();
 }
 
 function clickedItem(name, price, image){
@@ -118,6 +119,24 @@ function handleScreenChange(e) {
 }
 
 mediaQuery.addEventListener("change", handleScreenChange);
+
+function addDropdownToggleListener() {
+    let btn = document.querySelector(".more-dropdown-btn");
+    let moreDropdownList = document.querySelector(".more-dropdown-list");
+
+    if (btn && moreDropdownList) {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation(); // Prevent event bubbling
+            moreDropdownList.classList.toggle("active");
+            btn.classList.toggle("active");
+        });
+    }
+
+    window.addEventListener("click", () => {
+        moreDropdownList?.classList.remove("active");
+        btn?.classList.remove("active");
+    });
+}
 
 
 window.onload = function() {

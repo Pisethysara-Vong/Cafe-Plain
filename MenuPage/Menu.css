@@ -6,6 +6,9 @@
     --secondary-text: #222222;
     --active: #3B7FF6;
     --hover: #553c2a;
+    --secondary-light: rgb(34, 124, 112, 0.2);
+    --secondary-light-2: rgba(113, 163, 112, 0.1);
+    --black: #34383f;
     --shadow: 0px 2px 8px 0px var(--secondary-light);
 }
 
@@ -63,9 +66,20 @@ main {
 
 h2{
     color: rgb(34, 34, 34);
-    margin-top: 25px;
+    margin-top: 16px;
     margin-bottom: 0px;
     font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+h2 .more {
+    margin-left: auto;
+}
+
+.line-break{
+    margin-top: 13px;
+    margin-bottom: 26px;
 }
 
 .order-btn{
@@ -85,6 +99,133 @@ h2{
     background-color: var(--sidebar-text);
     color: var(--sidebar);
     border: 3px solid var(--sidebar);
+}
+
+.more-dropdown-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1rem;
+    font-weight: 500;
+    width: fit-content;
+    padding: 6px;
+    border-radius: 50px;
+    border: 1px solid gray;
+    background-color: white;
+    box-shadow: var(--secondary-light-2);
+
+    cursor: pointer;
+    transition: box-shadow 0.2s ease-in, background-color 0.2s ease-in, border 0.3s;
+
+    span {
+        width: 100%;
+        font-weight: 600;
+        text-align: center;
+
+
+    }
+
+    svg {
+        fill: black;
+        width: 30px;    /* Increase the width */
+        height: 30px;
+    }
+}
+
+.more-dropdown-btn:hover {
+    background-color: var(--hover);
+    border: 1px solid white;
+
+
+    span {
+        width: 100%;
+        font-weight: 600;
+        text-align: center;
+        color: white;
+    }
+
+    svg {
+        fill: white;
+    }
+}
+
+.more-dropdown-btn.active {
+    background-color: var(--hover);
+    border: 1px solid white;
+
+
+    span {
+        width: 100%;
+        font-weight: 600;
+        text-align: center;
+        color: white;
+    }
+
+    svg {
+        fill: white;
+    }
+}
+
+.more-dropdown-list {
+    margin: 0;
+    margin-right: 15px;
+    padding: 0;
+    position: absolute;
+    top: 78px;
+    right: 0;
+    background-color: #fefefe;
+    border-radius: 10px;
+    max-height: 0;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: max-height 0.5s ease-in-out;
+
+    a {
+        text-decoration: none;
+    }
+}
+
+
+.more-dropdown-list.active {
+    max-height: 150px;
+}
+
+.more-dropdown-list-item {
+    padding: 1em;
+    padding-left: .8em;
+    display: flex;
+    align-items: center;
+    gap: .4em;
+    transition: background-color 0.2s ease-in;
+    font-size: .7em;
+    
+    span {
+        padding: 0;
+        text-align: left;
+        background: none;
+        border: none;
+        font: inherit;
+        cursor: pointer;
+        color: black;
+
+    }
+
+    svg {
+        fill: black;
+        padding: 0;
+    }
+}
+
+.more-dropdown-list-item:hover {
+    background-color: var(--hover);
+
+    span {
+        color: white;
+    }
+    svg {
+        fill: white;
+    }
+
 }
 
 #sidebar svg {

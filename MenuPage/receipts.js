@@ -44,7 +44,19 @@ function displayReceipts() {
         const emptyReceipts = `
             <h2>
                 Receipts
-                <button onclick="clearReceipts()">Delete receipts</button>
+                <div class="more">
+                    <div class="more-dropdown">
+                        <div onclick="toggle()" class="more-dropdown-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>
+                        </div>
+                    <ul class="more-dropdown-list">
+                        <li class="more-dropdown-list-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                            <button onclick="clearReceipts()" class="delete-btn">Delete receipts</button>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
             </h2>
             <hr color="black" id="line-break">
             <p id="empty-receipts">
@@ -91,12 +103,31 @@ function displayReceipts() {
             main.insertAdjacentHTML('beforeend', receiptHTML);
         });
     }
+    addDropdownToggleListener();
 }
 
 function clearReceipts() {
     receipts = []; // Clear the cart array
     localStorage.setItem('receipts', JSON.stringify(receipts)); // Update localStorage
     displayReceipts(); // Re-render the cart
+}
+
+function addDropdownToggleListener() {
+    let btn = document.querySelector(".more-dropdown-btn");
+    let moreDropdownList = document.querySelector(".more-dropdown-list");
+
+    if (btn && moreDropdownList) {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation(); // Prevent event bubbling
+            moreDropdownList.classList.toggle("active");
+            btn.classList.toggle("active");
+        });
+    }
+
+    window.addEventListener("click", () => {
+        moreDropdownList?.classList.remove("active");
+        btn?.classList.remove("active");
+    });
 }
 
 
