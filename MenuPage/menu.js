@@ -58,14 +58,20 @@ function renderPage(){
                 <img src=${item.image} alt="Iced Latte">
             </div>
             <div class="text">
-                ${item.name}
+                <div class="name-price">
+                    <div class="item-name">
+                        ${item.name}
+                    </div>
+                    <div class="item-price">
+                        ${item.price}
+                    </div>
+                </div>
                 <!-- Pass ID and Name as URL parameters -->
                 <a href="OrderingTemplate.html">
                     <button onclick="clickedItem('${item.name}', '${item.price}', '${item.image}')" class="order-btn">+</button>
                 </a>
-                <br>
-                ${item.price}
             </div>
+
         </div>`
         items.insertAdjacentHTML('beforeend', template);
 
