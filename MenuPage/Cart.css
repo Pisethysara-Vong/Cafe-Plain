@@ -88,6 +88,26 @@ body {
     gap: 1em;
 }
 
+.logout-btn {
+    border-radius: .5em;
+    padding: .85em;
+    text-decoration: none;
+    color: var(--sidebar-text);
+    display: flex;
+    align-items:center;
+    gap: 1em;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: var(--hover);
+}
+
 .logo {
     padding-left: .50em;
 }

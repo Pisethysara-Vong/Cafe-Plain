@@ -195,6 +195,48 @@ main {
     align-items: center;
 }
 
+.alt {
+    width: 100%;
+    font: inherit;
+    display: flex;
+    height: 0;
+    align-items: center;
+    justify-content: center;
+
+    p {
+        width: 100%;
+        padding: 0 3px;
+        margin: 0;
+        flex-shrink: 1.2;
+    }
+
+    hr {
+        width: 100%;
+    }
+}
+
+.signup-opts {
+    margin-top: 30px;
+    display: flex;
+    gap: 3em;
+    align-items: center;
+    justify-content: center;
+
+    button {
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        background-color: var(--sidebar-text);
+        padding: 0;
+        border: 2px solid var(--sidebar-text);
+        transition: 150ms ease;
+    }
+
+    button:hover {
+        border: 2px solid var(--sidebar);
+    }
+}
+
 .wrapper h1 {
     font-size: 2rem;
     font-weight: 600;
@@ -292,6 +334,14 @@ main {
 
 #error-messages {
     color: red;
+    font: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#success-messages {
+    color: green;
     font: inherit;
     display: flex;
     align-items: center;

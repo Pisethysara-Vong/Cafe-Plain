@@ -44,6 +44,26 @@ body {
     grid-template-columns: auto 1fr;
 }
 
+.logout-btn {
+    border-radius: .5em;
+    padding: .85em;
+    text-decoration: none;
+    color: var(--sidebar-text);
+    display: flex;
+    align-items:center;
+    gap: 1em;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: var(--hover);
+}
+
 #sidebar {
     box-sizing: border-box;
     height: 100vh;
@@ -216,16 +236,16 @@ main {
         display: flex;
         flex-direction: column;
         gap: 1em;
-        margin-top: 30px;
+        margin-top: 45px;
         align-items: start;
         font-size: 1.2em;
         height: 100vh;
         font-weight: 500;
     }
 
-    .username {
+    #username {
         font: inherit;
-        font-size: 1.4em;
+        font-size: 1.8em;
         padding: 20px 20px 0 20px;
         font-weight: 500;
     }
@@ -250,7 +270,7 @@ main {
     }
 }
 
-.user-info #email {
+.emailSection, .createdSection {
     display: flex;
     align-items: center;
     justify-content: center;
