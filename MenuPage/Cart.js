@@ -106,8 +106,9 @@ function checkout() {
     receipts.push(cart);
     localStorage.setItem('receipts', JSON.stringify(receipts));
 
-    const date = '12/19/24';
-    cart.push({date});
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString('en-GB');    
+    cart.push({formattedDate});
     localStorage.setItem('cart', JSON.stringify(cart));
     cart = JSON.parse(localStorage.getItem('cart')) || [];
     receiptsHistory.push(cart);

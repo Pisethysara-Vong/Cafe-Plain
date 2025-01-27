@@ -348,6 +348,27 @@ main {
     justify-content: center;
 }
 
+#toggle-password, #toggle-confirm-password {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 520px;
+    transition: 150ms ease;
+
+    svg {
+        fill: var(--main-text);
+    }
+}
+
+#toggle-password:hover, #toggle-confirm-password:hover {
+    background-color: #dbdbdb;
+}
+
 @media(max-width: 800px) {
     .wrapper {
         width: min(600px, 100%);

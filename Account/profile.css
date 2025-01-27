@@ -109,6 +109,13 @@ body {
     }
 }
 
+#sidebar ul li button#active {
+    color: var(--active);
+    svg {
+        fill: var(--active);
+    }
+}
+
 #sidebar a, #sidebar .dropdown-btn, .logo {
     border-radius: .5em;
     padding: .85em;
@@ -251,7 +258,6 @@ main {
     }
 
     button {
-        margin-top: 10px;
         border: 2px solid var(--sidebar);
         border-radius: 1000px;
         padding: 0.85em 2em;
@@ -267,6 +273,111 @@ main {
     button:hover {
         background-color: var(--sidebar-text);
         color: var(--sidebar);
+    }
+
+    button:focus {
+        outline: none;
+        background-color: var(--sidebar-text);
+        color: var(--sidebar);
+    }
+}
+
+.wrapper form {
+    width: min(400px, 100%);
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+
+    > div {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    label {
+        flex-shrink: 0;
+        height: 50px;
+        width: 50px;
+        background-color: var(--sidebar);
+        border-radius: 10px 0 0 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+        fill: var(--sidebar-text);
+        }
+    }
+
+    input {
+        box-sizing: border-box;
+        flex-grow: 1;
+        min-width: 0;
+        height: 50px;
+        padding: 1em;
+        font:inherit;
+        border-radius: 0 10px 10px 0;
+        border: 2px solid #f7f7f7;
+        border-left: none;
+        background-color: #f7f7f7;
+        transition: 150ms ease;
+    }
+
+    input:hover {
+        border: 2px solid var(--sidebar);
+    }
+
+    input:focus {
+        outline: none;
+        border-color: var(--sidebar);
+    }
+
+    .cancel-confirm-btn {
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: end;
+        gap: 1em;
+        height: 100%;
+    }
+
+    #cancel-btn, #confirm-btn{
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+    }
+    #cancel-btn {
+        background-color: var(--sidebar-text);
+        border: 2px solid grey;
+        color: grey;
+        transition: 150ms ease;
+    }
+    #cancel-btn:hover {
+        background-color: grey;
+        color: white;
+    }
+    #confirm-btn {
+        background-color: #3B7FF6;
+        border: 2px solid #3B7FF6;
+    }
+    #confirm-btn:hover {
+        background-color: var(--sidebar-text);
+        color: #3B7FF6;
+        border: 2px solid #3B7FF6;
+    }
+
+    .incorrect label {
+        background-color: red;
+    }
+    
+    .incorrect input {
+        border-color: red;
     }
 }
 
@@ -290,6 +401,35 @@ main {
 .wrapper .user-info #email span {
     text-decoration: underline;
     text-decoration-color: var(--sidebar);
+}
+
+#error-messages {
+    color: red;
+    font: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#toggle-password, #toggle-confirm-password {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 950px;
+    transition: 150ms ease;
+
+    svg {
+        fill: var(--main-text);
+    }
+}
+
+#toggle-password:hover, #toggle-confirm-password:hover {
+    background-color: #dbdbdb;
 }
 
 

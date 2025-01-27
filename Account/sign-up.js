@@ -1,4 +1,3 @@
-
 const sideBar = document.getElementById('sidebar');
 const profile = document.getElementById('profile-img');
 const mediaQuery = window.matchMedia("(max-width: 800px)");

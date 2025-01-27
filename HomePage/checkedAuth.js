@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import {getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js"
-import {getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
+import {getFirestore, doc, getDoc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
+
 
 
 const firebaseConfig = {
@@ -18,103 +19,59 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const getMenuItems = async () => {
-    try {
-        const menuCollection = collection(db, "menu");
-        const querySnapshot = await getDocs(menuCollection);
-
-        const menu = {};
-        querySnapshot.forEach((doc) => {
-            const { category, items } = doc.data();
-            menu[category] = items;
-        });
-
-        // Combine coffees and teas into one object
-        const formattedMenu = {
-            coffees: menu.coffees || [],
-            teas: menu.teas || []
-        };
-
-        console.log(formattedMenu);
-        return formattedMenu;
-    } catch (error) {
-        console.error("Error fetching menu items: ", error);
-    }
-};
-
-const renderPage = async () => {
-    try {
-        const menuItems = await getMenuItems(); // Await the resolved data
-        const coffee = document.getElementById('wrapper1');
-        const tea = document.getElementById('wrapper2');
-
-        menuItems.coffees.forEach((item) => {
-            const template = `
-            <div class="container">
-                <div class="image">
-                    <img src=${item.image} alt="Iced Latte">
-                </div>
-                <div class="text">
-                    <div class="name-price">
-                        <div class="item-name">
-                            ${item.name}
-                        </div>
-                        <div class="item-price">
-                            ${item.price}
-                        </div>
-                    </div>
-                    <!-- Pass ID and Name as URL parameters -->
-                    <a href="OrderingTemplate.html">
-                        <button onclick="clickedItem('${item.name}', '${item.price}', '${item.image}')" class="order-btn">+</button>
-                    </a>
-                </div>
-            </div>`;
-            coffee.insertAdjacentHTML('beforeend', template);
-        });
-
-        menuItems.teas.forEach((item) => {
-            const template = `
-            <div class="container">
-                <div class="image">
-                    <img src=${item.image} alt="Iced Latte">
-                </div>
-                <div class="text">
-                    <div class="name-price">
-                        <div class="item-name">
-                            ${item.name}
-                        </div>
-                        <div class="item-price">
-                            ${item.price}
-                        </div>
-                    </div>
-                    <!-- Pass ID and Name as URL parameters -->
-                    <a href="OrderingTemplate.html">
-                        <button onclick="clickedItem('${item.name}', '${item.price}', '${item.image}')" class="order-btn">+</button>
-                    </a>
-                </div>
-            </div>`;
-            tea.insertAdjacentHTML('beforeend', template);
-        });
-    } catch (error) {
-        console.error("Error rendering page: ", error);
-    }
-};
 
 function checkUserSession() {
     const account = document.getElementById('account');
     const sign_in = document.getElementById('sign-in');
+    const profileImg = document.getElementById('profile-sidebar');
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            sign_in.style.display = "none";
-        } else {
-            account.style.display = "none";
-        }
-    });
+    let isUser = JSON.parse(localStorage.getItem('isUser')) || '';
+    let profile = JSON.parse(localStorage.getItem('profile')) || {};
+
+    if (isUser === true) {
+        sign_in.style.display = "none";
+        profileImg.src = profile.profilePic || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541'; // Fallback to a default image if none is found
+    }
+    else if (isUser === false) {
+        account.style.display = "none";
+    }
+    else {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                sign_in.style.display = "none";
+
+                const loggedInUserId = user.uid;
+                const docRef = doc(db, "users", loggedInUserId);
+                getDoc(docRef)
+                    .then((docSnap) => {
+                        if (docSnap.exists()) {
+                            const userData = docSnap.data();
+                            const creationTime = new Date(user.metadata.creationTime).toLocaleString();
+                            const username = userData.username;
+                            const email = userData.email;
+                            const profilePic = userData.profilePicture;
+                            const profileImg = document.getElementById('profile-sidebar');
+
+                            profileImg.src = profilePic || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541'; // Fallback to a default image if none is found
+                            localStorage.setItem('profile', JSON.stringify({profilePic, username, email, creationTime}));
+                            localStorage.setItem('isUser', JSON.stringify(true));
+
+                        } else {
+                            console.log("No document found");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error getting document:", error);
+                    });
+            } 
+            else {
+                account.style.display = "none";
+            }
+        });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', checkUserSession);
-document.addEventListener('DOMContentLoaded', renderPage);
 
 document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.querySelector('.logout-btn');
@@ -124,6 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
             signOut(auth)
                 .then(() => {
                     window.location.href = "/Brocode/CafeShop/HomePage/home.html";
+                    localStorage.setItem('profile', JSON.stringify({}));
+                    localStorage.setItem('isUser', JSON.stringify(''));
                 })
                 .catch((error) => {
                     console.error("Error signing out:", error.message);
@@ -131,4 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
+
 
