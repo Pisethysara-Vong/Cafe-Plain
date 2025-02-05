@@ -165,7 +165,7 @@ main {
     font-size: 12pt;
     color: black;
     min-height: 100vh;
-    background-image: url(/Brocode/CafeShop/assets/GIrvrQSX0AAN9uK.jpg);
+    background-image: url(/Brocode/CafeShop/assets/karina-aespa-drama-the-giant-hd-wallpaper-uhdpaper.com-635@1@m.jpg);
     background-size: cover;
     background-position: right;
     overflow: hidden;
@@ -378,7 +378,7 @@ main {
         grid-template-columns: 1fr;
     }
     main {
-        padding: 2em 1em 60px 1em;
+        padding: 0;
     }
     .container {
         border: none;

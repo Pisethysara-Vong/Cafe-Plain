@@ -135,13 +135,14 @@ form.addEventListener('submit', (e) => {
             window.location.href = "/Brocode/CafeShop/HomePage/home.html";
         })
         .catch((error) => {
-            const errorCode = error.code;
-            if (errorCode === 'auth/user-not-found') {
+            if (error.code == 'auth/user-not-found') {
                 error_messages.innerText = 'Account does not exist';
-            } else if (errorCode === 'auth/wrong-password') {
-                error_messages.innerText = 'Incorrect Email or Password';
+            } else if (error.code == 'auth/wrong-password') {
+                error_messages.innerText = 'Incorrect password';
             } else {
-                error_messages.innerText = 'Account does not exist';
+                error_messages.innerText = 'An error occurred. Please try again.';
+                console.log(error.code);
+                console.log(error.message);
             }
         })
     }

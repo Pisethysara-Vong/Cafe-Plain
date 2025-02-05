@@ -2,6 +2,13 @@ const sideBar = document.getElementById('sidebar');
 const mediaQuery = window.matchMedia("(max-width: 800px)");
 
 function toggleSubMenu(button){
+    let isUser = JSON.parse(localStorage.getItem('isUser')) || false;
+
+    if (isUser !== true) {
+        alert("Requires Account to access.")
+        return;
+    }
+
     if (!button.nextElementSibling.classList.contains('show')){
         closeAllSubMenus();
     }
@@ -28,19 +35,6 @@ function closeAllSubMenus(){
 function handleScreenChange(e) {
     if (e.matches && sideBar.classList.contains('close')) {
         toggleSideBar();
-    }
-}
-
-function renderAccount() {
-    const account = document.getElementById('account');
-    const sign_in = document.getElementById('sign-in');
-    const loggedInUserId = localStorage.getItem('loggedInUserId');
-
-    if (loggedInUserId) {
-        sign_in.style.display = "none";
-    }
-    else {
-        account.style.display = "none";
     }
 }
 

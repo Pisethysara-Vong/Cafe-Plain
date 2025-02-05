@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import {getAuth, updateEmail, updatePassword, updateProfile, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js"
+import {getAuth, updatePassword, updateProfile, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js"
 import {getFirestore, doc, updateDoc, getDoc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
 
 const firebaseConfig = {
@@ -32,6 +32,8 @@ const toggleConfirmPasswordButton = document.getElementById('toggle-confirm-pass
 const eyeIconPassword = document.getElementById('eye-icon');
 const eyeIconConfirm = document.getElementById('eye-icon-confirm');
 
+let selectedFile = null; // Variable to store the selected file
+
 // Function to upload and change profile picture
 async function changeProfilePicture() {
     const user = auth.currentUser;
@@ -44,31 +46,13 @@ async function changeProfilePicture() {
     fileInput.type = "file";
     fileInput.accept = "image/*"; // Allow image files only
 
-    fileInput.addEventListener("change", async (e) => {
+    fileInput.addEventListener("change", (e) => {
         const file = e.target.files[0];
-        if (!file) return;
-
-        try {
-            // Read file as Data URL
-            const reader = new FileReader();
-            reader.onload = async function () {
-                const profilePictureURL = reader.result;
-
-                // Update profile picture in Firebase Authentication
-                await updateProfile(user, { photoURL: profilePictureURL });
-
-                // Update profile picture in Firestore
-                const docRef = doc(db, "users", user.uid);
-                await updateDoc(docRef, { profilePicture: profilePictureURL });
-
-                alert("Profile picture updated successfully!");
-                window.location.reload(); // Refresh the page to reflect changes
-            };
-            reader.readAsDataURL(file);
-        } catch (error) {
-            console.error("Error updating profile picture:", error);
-            alert("Failed to update profile picture. Please try again.");
+        if (!file) {
+            return;
         }
+        selectedFile = file; // Store the selected file
+        document.getElementById('selected-file-path').innerText = `image: ${file.name}`; // Display the file name
     });
 
     fileInput.click(); // Trigger the file input dialog
@@ -120,7 +104,6 @@ confirmBtn.addEventListener("click", async (e) => {
     error_messages.innerText = '';
 
     const newUsername = usernameInput.value;
-    const newEmail = emailInput.value;
     const newPassword = password_input.value;
     const confirmNewPassword = confirm_password_input.value;
 
@@ -146,16 +129,27 @@ confirmBtn.addEventListener("click", async (e) => {
                 await updateDoc(docRef, { username: newUsername });
             }
     
-            // Update email
-            if (newEmail && newEmail !== user.email) {
-                await updateEmail(user, newEmail);
-                const docRef = doc(db, "users", user.uid);
-                await updateDoc(docRef, { email: newEmail });
-            }
-    
             // Update password
             if (newPassword) {
                 await updatePassword(user, newPassword);
+            }
+
+            // Update profile picture if a new file is selected
+            if (selectedFile) {
+                const reader = new FileReader();
+                reader.onload = async function () {
+                    const profilePictureURL = reader.result;
+
+                    // Update profile picture in Firebase Authentication
+                    await updateProfile(user, { photoURL: profilePictureURL });
+
+                    // Update profile picture in Firestore
+                    const docRef = doc(db, "users", user.uid);
+                    await updateDoc(docRef, { profilePicture: profilePictureURL });
+
+                    alert("Profile picture updated successfully!");
+                };
+                reader.readAsDataURL(selectedFile);
             }
     
             alert("Profile updated successfully!");

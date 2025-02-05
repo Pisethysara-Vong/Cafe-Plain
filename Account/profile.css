@@ -284,7 +284,7 @@ main {
 
 .wrapper form {
     width: min(400px, 100%);
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -430,6 +430,18 @@ main {
 
 #toggle-password:hover, #toggle-confirm-password:hover {
     background-color: #dbdbdb;
+}
+
+#selected-file-path {
+    width: 100%; /* Ensure it takes the full width of the wrapper */
+    max-width: 100%; /* Prevent it from exceeding the wrapper's width */
+    overflow: hidden; /* Hide overflow content */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+    white-space: nowrap; /* Prevent text from wrapping */
+    margin-top: 10px; /* Add some spacing between the button and the file path */
+    font-size: 14px; /* Adjust font size as needed */
+    text-align: center; /* Center the text */
+    padding-bottom: 5px;
 }
 
 

@@ -25,15 +25,12 @@ function checkUserSession() {
     const sign_in = document.getElementById('sign-in');
     const profileImg = document.getElementById('profile-sidebar');
 
-    let isUser = JSON.parse(localStorage.getItem('isUser')) || '';
+    let isUser = JSON.parse(localStorage.getItem('isUser')) || false;
     let profile = JSON.parse(localStorage.getItem('profile')) || {};
 
     if (isUser === true) {
         sign_in.style.display = "none";
         profileImg.src = profile.profilePic || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541'; // Fallback to a default image if none is found
-    }
-    else if (isUser === false) {
-        account.style.display = "none";
     }
     else {
         onAuthStateChanged(auth, (user) => {
@@ -82,12 +79,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(() => {
                     window.location.href = "/Brocode/CafeShop/HomePage/home.html";
                     localStorage.setItem('profile', JSON.stringify({}));
-                    localStorage.setItem('isUser', JSON.stringify(''));
+                    localStorage.setItem('isUser', JSON.stringify(false));
                 })
                 .catch((error) => {
                     console.error("Error signing out:", error.message);
                 });
         });
+    }
+});
+
+const clearMenuOnClose = () => {
+    localStorage.setItem('menu', JSON.stringify([]));
+};
+
+window.addEventListener('pagehide', (event) => {
+    if (!event.persisted) {
+        clearMenuOnClose();
     }
 });
 

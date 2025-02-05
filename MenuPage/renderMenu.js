@@ -57,20 +57,19 @@ const getMenuItems = async () => {
 
 const renderPage = async () => {
     
-    // let menu = JSON.parse(localStorage.getItem('menu')) || [];
-    // let menuItems;
+    let menu = JSON.parse(localStorage.getItem('menu')) || [];
+    let menuItems;
 
-    // if (menu.length == 0) {
-    //     menuItems = await getMenuItems();
-    //     localStorage.setItem('menu', JSON.stringify(menuItems));
-    // } else {
-    //     menuItems = menu;
-    //     console.log("used local storage menu")
-    // }
+    if (menu.length == 0) {
+        menuItems = await getMenuItems();
+        localStorage.setItem('menu', JSON.stringify(menuItems));
+    } else {
+        menuItems = menu;
+        console.log("used local storage menu")
+    }
 
 
     try {
-        const menuItems = await getMenuItems();
         const coffee = document.getElementById('wrapper1');
         const tea = document.getElementById('wrapper2');
 

@@ -505,7 +505,7 @@ body {
     }
 }
 
-@media screen and (max-width: 595px) {
+@media screen and (max-width: 660px) {
     .wrapper {
         display: flex;
         justify-content: space-evenly;

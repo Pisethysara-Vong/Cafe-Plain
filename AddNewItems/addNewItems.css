@@ -1,57 +1,53 @@
 main {
     padding: 0;
+    margin: 0;
+    font-size: 12pt;
+    color: black;
+    min-height: 100vh;
+    background-image: url(/Brocode/CafeShop/assets/karina-aespa-drama-the-giant-hd-wallpaper-uhdpaper.com-635@1@m.jpg);
+    background-size: cover;
+    background-position: right;
+    overflow: hidden;
+
+    p a {
+        text-decoration: none;
+        color: var(--sidebar);
+    }
+
+    p a:hover {
+        text-decoration: underline;
+    }
 }
 
-#title{
-    color: rgb(34, 34, 34);
-    margin-top: 25px;
-    margin-bottom: 0px;
-    margin-left: 15px;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-}
-
-#line-break {
-    margin: 0px 15px;
-    margin-top: 24px;
-}
-
-.reservation {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    padding: 15px;
-    padding-bottom: 0;
-    height: 87.6%;
-}
-
-.form {
-    border-right: 2px solid black;
+.wrapper {
+    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    height: 100vh;
+    width: max(40%, 600px);
+    padding: 0;
+    padding: 10px;
+    border-radius: 0 20px 20px 0;
     display: flex;
     flex-direction: column;
-    width: 585px;
     align-items: center;
-    padding: 0;
-
-
 }
 
-h1 {
-    font-size: 1.5rem;
+.wrapper h1 {
+    font-size: 2rem;
     font-weight: 600;
     text-transform: uppercase;
-    margin-bottom: 20px;
+    margin-top: 50px;
 }
 
-.form form {
-    width: 415px;
-    margin-top: 20px;
+.wrapper form {
+    width: min(400px, 100%);
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
 
     > div {
         width: 100%;
@@ -74,21 +70,6 @@ h1 {
         }
     }
 
-    input {
-        box-sizing: border-box;
-        flex-grow: 1;
-        min-width: 0;
-        height: 50px;
-        padding: 1em;
-        padding-right: 0;
-        font:inherit;
-        border-radius: 0 10px 10px 0;
-        border: 2px solid #f7f7f7;
-        border-left: none;
-        background-color: #f7f7f7;
-        transition: 150ms ease;
-    }
-
     select {
         box-sizing: border-box;
         flex-grow: 1;
@@ -101,9 +82,22 @@ h1 {
         border-left: none;
         background-color: #f7f7f7;
         transition: 150ms ease;
+        appearance: none;
     }
 
-
+    input {
+        box-sizing: border-box;
+        flex-grow: 1;
+        min-width: 0;
+        height: 50px;
+        padding: 1em;
+        font:inherit;
+        border-radius: 0 10px 10px 0;
+        border: 2px solid #f7f7f7;
+        border-left: none;
+        background-color: #f7f7f7;
+        transition: 150ms ease;
+    }
 
     input:hover, select:hover {
         border: 2px solid var(--sidebar);
@@ -140,52 +134,51 @@ h1 {
     }
 }
 
-.available {
-    padding: 0px 15px;
+.wrapper form .incorrect label {
+    background-color: red;
 }
 
-.rooms {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    row-gap: 20px;
+.wrapper form .incorrect input {
+    border-color: red;
 }
 
-.room {
-    width: 250px;
-    height: 200px;
-    background-color: #6F4E37;
-    color: white;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.category:after {
+    content: '\2304';
+    font-size: 25px;
+    line-height: 35px;
+    position: absolute;
+    left: 530px;
 }
 
-#room-num {
-    font-weight: 500;
-    font-size: 1.5em;
-    text-align: center;
-}
-
-.room button {
-    border: 2px solid var(--sidebar-text);
-    padding: 0.85em 5.4em;
-    border-radius: 8px;
-    background-color: var(--sidebar-text);
-    color: var(--sidebar);
+#add-image{
+    border: 2px solid var(--sidebar);
+    border-radius: 50%;
+    padding: 5px 12px;
+    background-color: var(--sidebar);
+    color: var(--sidebar-text);
     font: inherit;
     font-weight: 600;
-    font-size: 1em;
     text-transform: uppercase;
     cursor: pointer;
     transition: 150ms ease;
+    font-size: 1.2em;
+    margin-left: 10px;
     position: relative;
-    top: 46px;
+    bottom: 4px;    
 }
 
-.room button:hover {
-    background-color: var(--sidebar);
-    color: var(--sidebar-text);
+#add-image:hover {
+    background-color: var(--sidebar-text);
+    color: var(--sidebar);
+}
+
+#add-image:focus {
+    outline: none;
+    background-color: var(--sidebar-text);
+    color: var(--sidebar);
+}
+
+.image-btn {
+    position: relative;
+    right: 150px;
 }

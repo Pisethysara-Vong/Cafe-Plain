@@ -86,6 +86,13 @@ body {
     }
 }
 
+#sidebar ul li button#active {
+    color: var(--active);
+    svg {
+        fill: var(--active);
+    }
+}
+
 #sidebar a, #sidebar .dropdown-btn, .logo {
     border-radius: .5em;
     padding: .85em;

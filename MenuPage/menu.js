@@ -18,6 +18,12 @@ const mediaQuery2 = window.matchMedia("(max-width: 1500px)");
 
 
 function toggleSubMenu(button){
+    let isUser = JSON.parse(localStorage.getItem('isUser')) || false;
+
+    if (isUser !== true) {
+        alert("Requires Account to access.")
+        return;
+    }
     if (!button.nextElementSibling.classList.contains('show')){
         closeAllSubMenus();
     }
