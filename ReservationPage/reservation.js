@@ -29,9 +29,38 @@ document.getElementById("reservation-form").addEventListener("submit", async fun
     const date = document.getElementById("date-input").value;
     const timeSlot = document.getElementById("time-input").value;
     const roomsList = document.getElementById("room-list");
+    let errors = [];
+    document.getElementById('error-messages').innerText = '';
 
-    if (!date || !timeSlot) {
-        alert("Please select both date and time slot.");
+    if (!date) {
+        errors.push('Please select a date');
+        document.getElementById("date-input").parentElement.classList.add('incorrect');
+    }
+    if (!timeSlot) {
+        errors.push('Please select a time slot');
+        document.getElementById("time-input").parentElement.classList.add('incorrect');
+    }
+
+    if (errors.length > 0) {
+        document.getElementById('error-messages').innerText = errors.join('\n');
+        return;
+    }
+
+    // Get current date and time
+    const now = new Date();
+    const selectedDate = new Date(date);
+
+    // Extract time slot range
+    const [startTimeStr, endTimeStr] = timeSlot.split("-");
+    const [startHour, startMinute] = startTimeStr.split(":").map(Number);
+
+    // Create a Date object for the selected time slot
+    const selectedTime = new Date(selectedDate);
+    selectedTime.setHours(startHour, startMinute, 0, 0);
+
+    // Check if selected time is in the past
+    if (selectedTime < now) {
+        roomsList.innerHTML = "<p>No available rooms for this timeslot.</p>";
         return;
     }
 
@@ -84,10 +113,18 @@ window.bookRoom = async function (roomId, roomName, date, timeSlot) {
     const userId = user.uid;
 
     try {
+        const schedule = {
+            "08:00-10:00": "08:00 AM - 10:00 AM",
+            "10:00-12:00": "10:00 AM - 12:00 PM",
+            "12:00-14:00": "12:00 PM - 02:00 PM",
+            "14:00-16:00": "02:00 PM - 04:00 PM",
+            "16:00-18:00": "04:00 PM - 06:00 PM",
+            "18:00-20:00": "06:00 PM - 08:00 PM",
+        }
         // Update room's booking
         const roomRef = doc(db, "reservations", roomId);
         await updateDoc(roomRef, {
-            bookings: arrayUnion({ date, time: timeSlot })
+            bookings: arrayUnion({ date, time: schedule[timeSlot] })
         });
 
         // Store reservation under user's account
@@ -95,8 +132,9 @@ window.bookRoom = async function (roomId, roomName, date, timeSlot) {
         await updateDoc(userRef, {
             reservations: arrayUnion({
                 date: date,
-                time: timeSlot,
-                room: roomName
+                time: schedule[timeSlot],
+                room: roomName,
+                roomId: roomId
             })
         });
 
@@ -108,4 +146,15 @@ window.bookRoom = async function (roomId, roomName, date, timeSlot) {
         alert("Failed to book room. Try again.");
     }
 }
+
+const allInputs = [ document.getElementById("date-input"),  document.getElementById("time-input")].filter(input => input != null);
+
+allInputs.forEach(input => {
+    input.addEventListener('input', () => {
+        if(input.parentElement.classList.contains('incorrect')) {
+            input.parentElement.classList.remove('incorrect');
+        }
+        document.getElementById('error-messages').innerText = '';
+    })
+})
 
