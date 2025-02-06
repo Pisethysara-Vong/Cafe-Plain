@@ -2,16 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserLocalPersistence} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js"
 import {getFirestore, setDoc, doc, query, where, getDocs, collection} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
-
-const firebaseConfig = {
-    apiKey: "AIzaSyCJVzvz6-X-VFAqpf8AoZ9scl9iXWzaK7w",
-    authDomain: "cafe-plain.firebaseapp.com",
-    projectId: "cafe-plain",
-    storageBucket: "cafe-plain.firebasestorage.app",
-    messagingSenderId: "590173429316",
-    appId: "1:590173429316:web:dc4ba8bdbcee1ac32a2611",
-    measurementId: "G-D1JDZZ9TZS"
-};
+import {firebaseConfig} from "../firebaseConfig.js";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
