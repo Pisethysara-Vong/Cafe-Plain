@@ -13,6 +13,7 @@ const db = getFirestore(app);
 function checkUserSession() {
     const account = document.getElementById('account');
     const sign_in = document.getElementById('sign-in');
+    const add_new_item = document.getElementById('add-item');
     const profileImg = document.getElementById('profile-sidebar');
 
     let isUser = JSON.parse(localStorage.getItem('isUser')) || false;
@@ -53,6 +54,7 @@ function checkUserSession() {
             } 
             else {
                 account.style.display = "none";
+                add_new_item.style.display = "none"
             }
         });
     }
@@ -81,6 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
 const clearMenuOnClose = () => {
     localStorage.setItem('menu', JSON.stringify([]));
 };
+
+
 
 window.addEventListener('pagehide', (event) => {
     if (!event.persisted) {

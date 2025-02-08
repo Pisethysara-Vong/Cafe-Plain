@@ -101,7 +101,7 @@ confirmBtn.addEventListener("click", async (e) => {
 
     if (!newUsername) {
         errors.push('Username cannot be empty');
-        usernameInput.classList.add('incorrect');
+        usernameInput.parentElement.classList.add('incorrect');
     }
     if (newPassword && newPassword !== confirmNewPassword) {
         errors.push('Password does not match confirm password');
