@@ -32,6 +32,11 @@ html{
 
 main {
     padding: 0px;
+    background-image: url(https://media.istockphoto.com/id/1191879835/photo/empty-tabletop-in-the-coffe-shop.jpg?s=612x612&w=0&k=20&c=0ng1OHRLWiD0cVHdYZbmARj0fyR0HQ35BOFF7Ry8Qqs=);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 .container{
@@ -49,8 +54,10 @@ main {
     background-color: white;
     padding: 0px 15px;
     padding-top: 15px;
+    padding-bottom: 13px;
     h2 {
         margin: 0px;
+        color: rgb(34, 34, 34);
     }
 }
 
@@ -95,8 +102,8 @@ main {
 }
 
 h2{
-    color: rgb(34, 34, 34);
-    margin-top: 16px;
+    color: var(--sidebar-text);
+    margin-top: 28px;
     margin-bottom: 0px;
     margin-left: 15px;
     font-size: 1.5rem;
@@ -217,7 +224,7 @@ h2 .more {
 
 
 .more-dropdown-list.active {
-    max-height: 800px;
+    max-height: 150px;
 }
 
 .more-dropdown-list-item {

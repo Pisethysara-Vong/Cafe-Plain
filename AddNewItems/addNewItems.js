@@ -32,7 +32,7 @@ async function addImage() {
     fileInput.type = "file";
     fileInput.accept = "image/*"; // Allow image files only
 
-    fileInput.addEventListener("change", (e) => {
+    fileInput.addEventListener("change", async (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
@@ -42,14 +42,46 @@ async function addImage() {
         document.getElementById('selected-file-path').style.display = 'block';
 
         // Convert image to Base64
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            base64Image = reader.result; // Store Base64 encoded image
-        };
-        reader.readAsDataURL(file);
+        try {
+            base64Image = await resizeAndConvertToBase64(file);
+        } catch (error) {
+            console.error("Error processing image:", error);
+            alert("Failed to process image. Try another one.");
+        }
     });
 
     fileInput.click();
+}
+
+async function resizeAndConvertToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                const maxWidth = 300; // Adjust max width
+                let scale = maxWidth / img.width;
+                if (scale > 1) scale = 1; // Prevent upscaling
+
+                canvas.width = img.width * scale;
+                canvas.height = img.height * scale;
+
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                resolve(canvas.toDataURL("image/png", 0.7)); // Adjust quality if needed
+            };
+
+            img.onerror = () => reject(new Error("Image failed to load"));
+        };
+
+        reader.onerror = () => reject(new Error("File reading failed"));
+    });
 }
 
 add_image_btn.addEventListener("click", addImage);

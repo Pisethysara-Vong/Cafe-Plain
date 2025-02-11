@@ -22,7 +22,9 @@ main {
     grid-template-columns: auto 1fr;
     padding: 15px;
     padding-bottom: 0;
-    height: 87.6%;
+    padding-bottom: 0;
+    height: 100%;
+    max-height: 93.5%;
 }
 
 .form {
@@ -217,4 +219,23 @@ h1 {
 .room button:hover {
     background-color: var(--sidebar);
     color: var(--sidebar-text);
+}
+
+@media (max-width:1150px) {
+    .reservation {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+    }
+    .form {
+        border: none;
+    }
+    .available {
+        padding: 15px 15px;
+        border-top: 2px solid black;
+    }
+    .rooms {
+        column-gap: 8px;
+    }
 }
