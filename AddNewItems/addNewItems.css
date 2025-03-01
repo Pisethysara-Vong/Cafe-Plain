@@ -1,0 +1,195 @@
+main {
+    padding: 0;
+    margin: 0;
+    font-size: 12pt;
+    color: black;
+    min-height: 100vh;
+    background-image: url(https://images.farmerconnect.com/tr:di-coffee.png/BG-5410658.5400606979451.jpeg);
+    background-size: cover;
+    background-position: right;
+    overflow: hidden;
+
+    p a {
+        text-decoration: none;
+        color: var(--sidebar);
+    }
+
+    p a:hover {
+        text-decoration: underline;
+    }
+}
+
+.wrapper {
+    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    height: 100vh;
+    width: max(40%, 600px);
+    padding: 0;
+    padding: 10px;
+    border-radius: 0 20px 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.wrapper h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 50px;
+    margin-bottom: 0;
+}
+
+.wrapper form {
+    width: min(400px, 100%);
+    margin-bottom: 20px;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    > div {
+        width: 100%;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+
+        #selected-file-path {
+            width: 100%; /* Ensure it takes the full width of the wrapper */
+            max-width: 100%; /* Prevent it from exceeding the wrapper's width */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Add ellipsis for overflow text */
+            white-space: nowrap; /* Prevent text from wrapping */
+            padding-top : 10px; /* Add some spacing between the button and the file path */
+            font-size: inherit; /* Adjust font size as needed */
+            text-align: left;
+            padding-left: 15px;
+            display: none;
+        }
+    }
+
+    label {
+        flex-shrink: 0;
+        height: 50px;
+        width: 50px;
+        background-color: var(--sidebar);
+        border-radius: 10px 0 0 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+        fill: var(--sidebar-text);
+        }
+    }
+
+    select {
+        box-sizing: border-box;
+        flex-grow: 1;
+        height: 50px;
+        padding: 0em 0.8em;
+        padding-right: 1em;
+        font:inherit;
+        border-radius: 0 10px 10px 0;
+        border: 2px solid #f7f7f7;
+        border-left: none;
+        background-color: #f7f7f7;
+        transition: 150ms ease;
+    }
+
+    input {
+        box-sizing: border-box;
+        flex-grow: 1;
+        min-width: 0;
+        height: 50px;
+        padding: 1em;
+        font:inherit;
+        border-radius: 0 10px 10px 0;
+        border: 2px solid #f7f7f7;
+        border-left: none;
+        background-color: #f7f7f7;
+        transition: 150ms ease;
+    }
+
+    input:hover, select:hover {
+        border: 2px solid var(--sidebar);
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: var(--sidebar);
+    }
+
+    button {
+        margin-top: 10px;
+        border: 2px solid var(--sidebar);
+        border-radius: 1000px;
+        padding: 0.85em 4em;
+        background-color: var(--sidebar);
+        color: var(--sidebar-text);
+        font: inherit;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 150ms ease;
+    }
+
+    button:hover {
+        background-color: var(--sidebar-text);
+        color: var(--sidebar);
+    }
+
+    button:focus {
+        outline: none;
+        background-color: var(--sidebar-text);
+        color: var(--sidebar);
+    }
+}
+
+.wrapper form .incorrect label {
+    background-color: red;
+}
+
+.wrapper form .incorrect input, .wrapper form .incorrect select {
+    border-color: red;
+}
+
+#add-image{
+    border: 2px solid var(--sidebar);
+    border-radius: 50%;
+    padding: 6px 12px;
+    background-color: var(--sidebar);
+    color: var(--sidebar-text);
+    font: inherit;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 150ms ease;
+    font-size: 1.2em;
+    margin-left: 10px;
+    position: relative;
+    bottom: 4px;    
+    box-sizing: border-box;
+}
+
+#add-image:hover {
+    background-color: var(--sidebar-text);
+    color: var(--sidebar);
+}
+
+#add-image:focus {
+    outline: none;
+    background-color: var(--sidebar-text);
+    color: var(--sidebar);
+}
+
+#error-messages {
+    color: red;
+    font: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

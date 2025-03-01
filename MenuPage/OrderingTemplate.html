@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordering</title>
+    <link rel="stylesheet" href="Ordering.css">
+</head>
+<body>
+    <h2 id="header">
+        <a href="../MenuPage/Menu.html">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
+        </a>
+        <span>Customization</span>
+    </h2>
+    <hr color="black">
+    <div class="template">
+        <div id="item">
+            <div class="container" id="container">
+                <div id="Img" class="image"></div>
+                <div id="Txt" class="text"></div>
+                <div class="quantity-control">
+                    <button id="decrease">-</button>
+                    <p id="quantity">1</p>
+                    <button id="increase">+</button>
+                </div>
+            </div>
+        </div>
+        
+    
+        <div class="ordering-container">
+            <div class="section-container">
+                <h2 id="section-title">Size</h2>
+                <p id="error-message1" class="error-messages"></p>
+                <ul class="options">
+                    <li>
+                        <input type="radio" name="size" id="option1_size" class="size-answer">
+                        <label for="option1_size" id="option1_text_size">Small +0.00$</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="size" id="option2_size" class="size-answer">
+                        <label for="option2_size" id="option2_text_size">Medium +0.50$</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="size" id="option3_size" class="size-answer">
+                        <label for="option3_size" id="option3_text_size">Large +1.00$</label>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="section-container">
+                <h2 id="section-title">Ice</h2>
+                <p id="error-message2" class="error-messages"></p>
+                <ul class="options">
+                    <li>
+                        <input type="radio" name="ice" id="option1_ice" class="ice-answer">
+                        <label for="option1_ice" id="option1_text_ice">25%</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="ice" id="option2_ice" class="ice-answer">
+                        <label for="option2_ice" id="option2_text_ice">50%</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="ice" id="option3_ice" class="ice-answer">
+                        <label for="option3_ice" id="option3_text_ice">75%</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="ice" id="option4_ice" class="ice-answer">
+                        <label for="option4_ice" id="option4_text_ice">100%</label>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="section-container">
+                <h2 id="section-title">Sugar</h2>
+                <p id="error-message3" class="error-messages"></p>
+                <ul class="options">
+                    <li>
+                        <input type="radio" name="sugar" id="option1_sugar" class="sugar-answer">
+                        <label for="option1_sugar" id="option1_text_sugar">25%</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="sugar" id="option2_sugar" class="sugar-answer">
+                        <label for="option2_sugar" id="option2_text_sugar">50%</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="sugar" id="option3_sugar" class="sugar-answer">
+                        <label for="option3_sugar" id="option3_text_sugar">75%</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="sugar" id="option4_sugar" class="sugar-answer">
+                        <label for="option4_sugar" id="option4_text_sugar">100%</label>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="info">
+                <p id="price">Price: $0.00</p>
+            </div>
+            <button onclick="addToCart()" class="cart-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z"/></svg>
+                <span>
+                    Add to cart
+                </span>
+            </button>
+        </div>
+    </div>
+
+    
+
+    <script src="Ordering.js"></script>
+</body>
+</html>
