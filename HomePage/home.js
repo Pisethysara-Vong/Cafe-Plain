@@ -44,3 +44,6 @@ if (mediaQuery.matches) {
 }
 
 mediaQuery.addEventListener("change", handleScreenChange);
+
+console.log(process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
+console.log(process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
