@@ -1,9 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import {getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
-import {firebaseConfig} from "/firebaseConfig.js";
+import {initializeFirebase} from "/firebaseConfig.js";
 
 
 // Initialize Firebase
+const firebaseConfig = await initializeFirebase();
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 

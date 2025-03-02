@@ -1,9 +1,9 @@
-export const firebaseConfig = {
-    apiKey: FIREBASE_API_KEY,
-    authDomain: FIREBASE_AUTH_DOMAIN,
-    projectId: FIREBASE_PROJECT_ID,
-    storageBucket: FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
-    appId: FIREBASE_APP_ID,
-    measurementId: FIREBASE_MEASUREMENT_ID
-};
+// frontend/firebase-app.js
+export async function initializeFirebase() {
+    // Fetch Firebase config from the deployed backend
+    const response = await fetch('/api/firebase-config.js');
+    const firebaseConfig = await response.json();
+
+    // Return the Firebase config
+    return firebaseConfig;
+}

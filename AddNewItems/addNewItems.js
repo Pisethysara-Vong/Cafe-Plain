@@ -1,9 +1,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { getFirestore, getDocs, collection, updateDoc, arrayUnion, doc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-import { firebaseConfig } from "/firebaseConfig.js";
+import {initializeFirebase} from "/firebaseConfig.js";
+
 
 // Initialize Firebase
+const firebaseConfig = await initializeFirebase();
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
