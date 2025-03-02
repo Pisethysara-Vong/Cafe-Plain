@@ -6,13 +6,24 @@ import {getFirestore, doc, getDoc} from "https://www.gstatic.com/firebasejs/11.1
 // Initialize Firebase
 
 async function initializeFirebase() {
-    // Fetch Firebase config from the deployed backend
-    const response = await fetch('/api/firebase-config');
-    const firebaseConfig = await response.json();
+    try {
+        const response = await fetch('/api/firebase-config');
 
-    // Return the Firebase config
-    return firebaseConfig;
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const firebaseConfig = await response.json();
+
+        console.log("✅ Firebase Config:", firebaseConfig);
+
+        // Return the Firebase config
+        return firebaseConfig;
+    } catch (err) {
+        console.error("🔥 Fetch Error:", err);
+    }
 }
+
 
 const firebaseConfig = await initializeFirebase();
 const app = initializeApp(firebaseConfig);
