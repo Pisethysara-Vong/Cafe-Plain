@@ -1,7 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import {getAuth} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js"
-import {getFirestore} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
-
 async function initializeFirebase() {
     try {
         const response = await fetch('/api/firebase-config');
@@ -16,12 +12,4 @@ async function initializeFirebase() {
     }
 }
 
-async function initializeAppAndAuth() {
-    const firebaseConfig = await initializeFirebase();
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    
-}
-
-export {initializeAppAndAuth};
+export {initializeFirebase};

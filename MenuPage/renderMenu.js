@@ -1,14 +1,16 @@
-import {collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
-import {initializeAppAndAuth} from "/firebaseConfig.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import {getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
+import {initializeFirebase} from "/firebaseConfig.js";
 
 
 // Initialize Firebase
 async function initialize() {
-    await initializeAppAndAuth(); // Wait for Firebase to be initialized before proceeding
-    renderPage(); // Call renderPage only after initialization is complete
-}
+    const firebaseConfig = await initializeFirebase()
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-initialize();
+    renderPage(db);
+}
 
 const addMenuItems = async () => {
     try {
@@ -26,7 +28,7 @@ const addMenuItems = async () => {
     }
 };
 
-const getMenuItems = async () => {
+const getMenuItems = async (db) => {
     try {
         const menuCollection = collection(db, "menu");
         const querySnapshot = await getDocs(menuCollection);
@@ -49,13 +51,13 @@ const getMenuItems = async () => {
     }
 };
 
-const renderPage = async () => {
+const renderPage = async (db) => {
     
     let menu = JSON.parse(localStorage.getItem('menu')) || [];
     let menuItems;
 
     if (menu.length == 0) {
-        menuItems = await getMenuItems();
+        menuItems = await getMenuItems(db);
         localStorage.setItem('menu', JSON.stringify(menuItems));
     } else {
         menuItems = menu;
