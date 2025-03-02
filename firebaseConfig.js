@@ -1,5 +1,5 @@
 // frontend/firebase-app.js
-export async function initializeFirebase() {
+async function initializeFirebase() {
     // Fetch Firebase config from the deployed backend
     const response = await fetch('/api/firebase-config');
     const firebaseConfig = await response.json();
@@ -7,3 +7,5 @@ export async function initializeFirebase() {
     // Return the Firebase config
     return firebaseConfig;
 }
+
+export {initializeFirebase};

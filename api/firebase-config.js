@@ -9,4 +9,4 @@ module.exports = (req, res) => {
         appId: process.env.FIREBASE_APP_ID,
         measurementId: process.env.FIREBASE_MEASUREMENT_ID,
     });
-    };
+};
