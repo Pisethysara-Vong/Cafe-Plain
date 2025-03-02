@@ -1,4 +1,3 @@
-// api/firebase-config.js
 module.exports = (req, res) => {
     res.json({
         apiKey: process.env.FIREBASE_API_KEY,
@@ -7,6 +6,5 @@ module.exports = (req, res) => {
         storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
         messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
         appId: process.env.FIREBASE_APP_ID,
-        measurementId: process.env.FIREBASE_MEASUREMENT_ID,
     });
 };

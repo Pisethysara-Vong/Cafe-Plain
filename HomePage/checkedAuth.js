@@ -1,10 +1,19 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import {getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js"
 import {getFirestore, doc, getDoc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
-import {initializeFirebase} from "/firebaseConfig.js";
 
 
 // Initialize Firebase
+
+async function initializeFirebase() {
+    // Fetch Firebase config from the deployed backend
+    const response = await fetch('/api/firebase-config');
+    const firebaseConfig = await response.json();
+
+    // Return the Firebase config
+    return firebaseConfig;
+}
+
 const firebaseConfig = await initializeFirebase();
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
