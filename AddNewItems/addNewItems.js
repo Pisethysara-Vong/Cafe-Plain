@@ -1,15 +1,24 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { getFirestore, getDocs, collection, updateDoc, arrayUnion, doc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-import {initializeFirebase} from "/firebaseConfig.js";
-
+import { initializeFirebase } from "/firebaseConfig.js";
 
 // Initialize Firebase
-const firebaseConfig = await initializeFirebase();
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+let app, auth, db;
 
+async function initialize() {
+    try {
+        const firebaseConfig = await initializeFirebase(); // Get the Firebase config
+        app = initializeApp(firebaseConfig); // Initialize Firebase app
+        auth = getAuth(app); // Initialize Firebase Auth
+        db = getFirestore(app); // Initialize Firestore database
+    } catch (error) {
+        console.error("Firebase initialization failed:", error);
+        throw new Error("Failed to initialize Firebase. Please try again later.");
+    }
+}
+
+// DOM Elements
 const add_image_btn = document.getElementById('add-image');
 const category = document.getElementById('category-input');
 const itemName = document.getElementById('drink-input');
@@ -19,7 +28,19 @@ const error_messages = document.getElementById('error-messages');
 let selectedFile = null;
 let base64Image = "";
 
+// Add image functionality
 async function addImage() {
+    // Ensure Firebase is initialized
+    if (!app || !auth || !db) {
+        try {
+            await initialize();
+        } catch (error) {
+            console.error("Firebase initialization error:", error);
+            alert("Failed to initialize Firebase. Please try again later.");
+            return;
+        }
+    }
+
     const user = auth.currentUser;
     if (!user) {
         alert("No user is signed in.");
@@ -55,6 +76,7 @@ async function addImage() {
     fileInput.click();
 }
 
+// Resize and convert image to Base64
 async function resizeAndConvertToBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -86,10 +108,23 @@ async function resizeAndConvertToBase64(file) {
     });
 }
 
+// Event listener for adding an image
 add_image_btn.addEventListener("click", addImage);
 
+// Event listener for form submission
 document.getElementById('form').addEventListener('submit', async function (event) {
     event.preventDefault();
+
+    // Ensure Firebase is initialized
+    if (!app || !auth || !db) {
+        try {
+            await initialize();
+        } catch (error) {
+            console.error("Firebase initialization error:", error);
+            alert("Failed to initialize Firebase. Please try again later.");
+            return;
+        }
+    }
 
     const user = auth.currentUser;
     if (!user) {
@@ -158,6 +193,7 @@ document.getElementById('form').addEventListener('submit', async function (event
     }
 });
 
+// Clear error messages when user starts typing
 const allInputs = [category, itemName, itemPrice, add_image_btn].filter(input => input != null);
 
 allInputs.forEach(input => {

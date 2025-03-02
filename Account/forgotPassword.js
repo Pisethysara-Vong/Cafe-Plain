@@ -4,15 +4,24 @@ import {initializeFirebase} from "/firebaseConfig.js";
 
 
 // Initialize Firebase
-const firebaseConfig = await initializeFirebase();
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+let app, auth;
 
+async function initializeAppAndAuth() {
+    const firebaseConfig = await initializeFirebase(); // Get the Firebase config
+    app = initializeApp(firebaseConfig); // Initialize Firebase app
+    auth = getAuth(app); // Initialize Firebase Auth
+}
+
+const form = document.getElementById('form');
 const success_message = document.getElementById('success-messages');
 const error_message = document.getElementById('error-messages');
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    if (!app || !auth) {
+        await initializeAppAndAuth();
+    }
     const email = document.getElementById('email').value;
     success_message.innerText = '';
     error_message.innerText = '';

@@ -125,7 +125,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     let menu = JSON.parse(localStorage.getItem('menu')) || [];
 
     if (menu.length == 0) {
-        await initialize(); // Ensure everything initializes first before rendering
+        await initialize();
+        renderPage(); // Ensure everything initializes first before rendering
     }
-    renderPage()
+    else {
+        renderPage();
+    }
 });

@@ -1,26 +1,36 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getFirestore, getDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import {initializeFirebase} from "/firebaseConfig.js";
-
+import { initializeFirebase } from "/firebaseConfig.js";
 
 // Initialize Firebase
-const firebaseConfig = await initializeFirebase();
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+let app, db, auth;
+
+async function initialize() {
+    try {
+        const firebaseConfig = await initializeFirebase(); // Get the Firebase config
+        app = initializeApp(firebaseConfig); // Initialize Firebase app
+        db = getFirestore(app); // Initialize Firestore database
+        auth = getAuth(app); // Initialize Firebase Auth
+    } catch (error) {
+        console.error("Firebase initialization failed:", error);
+        throw new Error("Failed to initialize Firebase. Please try again later.");
+    }
+}
 
 let currentUser = null;
 
+// Listen for authentication state changes
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        currentUser = user;  // Save the user to a variable
-        renderPage();         // Now call renderPage when the user is authenticated
+        currentUser = user; // Save the user to a variable
+        renderPage(); // Render the page when the user is authenticated
     } else {
         console.log("User is not authenticated");
     }
 });
 
+// Fetch reservations for the current user
 const getReservations = async () => {
     if (!currentUser) {
         console.error("No user is logged in.");
@@ -45,19 +55,19 @@ const getReservations = async () => {
     }
 };
 
+// Render the reservations page
 const renderPage = async () => {
     const reservations_list = document.getElementById('res-receipts');
 
     try {
         const reservations = await getReservations();
-        if (reservations.length == 0) {
-            document.getElementById('res-receipts').innerHTML = `
+        if (reservations.length === 0) {
+            reservations_list.innerHTML = `
             <p>
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M160-120v-240h640v240h-80v-160H240v160h-80Zm20-280q-25 0-42.5-17.5T120-460q0-25 17.5-42.5T180-520q25 0 42.5 17.5T240-460q0 25-17.5 42.5T180-400Zm100 0v-360q0-33 23.5-56.5T360-840h240q33 0 56.5 23.5T680-760v360H280Zm500 0q-25 0-42.5-17.5T720-460q0-25 17.5-42.5T780-520q25 0 42.5 17.5T840-460q0 25-17.5 42.5T780-400Zm-420-80h240v-280H360v280Zm0 0h240-240Z"/></svg>
             No reservations
             </p>`;
-        }
-        else {
+        } else {
             reservations_list.innerHTML = '';
             reservations.forEach((item) => {
                 const template = `
@@ -85,7 +95,8 @@ const renderPage = async () => {
     }
 };
 
-window.removeRoom = async function(roomId, roomName, date, timeSlot) {
+// Function to remove a reservation
+window.removeRoom = async function (roomId, roomName, date, timeSlot) {
     const userId = currentUser.uid;
     try {
         const userRef = doc(db, "users", userId);
@@ -94,28 +105,35 @@ window.removeRoom = async function(roomId, roomName, date, timeSlot) {
         const roomsRef = doc(db, "reservations", roomId);
         const snapshot = await getDoc(roomsRef);
         const roomData = snapshot.data();
-            
+
         // Filter out the specific reservation
-        const updatedUserReservations = userData.reservations.filter(receipt => 
+        const updatedUserReservations = userData.reservations.filter(receipt =>
             !(receipt.room === roomName && receipt.date === date && receipt.time === timeSlot)
         );
 
-        const updatedReservations = roomData.bookings.filter(reservation => {
+        const updatedReservations = roomData.bookings.filter(reservation =>
             !(reservation.date === date && reservation.time === timeSlot)
-        })
-    
+        );
+
         // Update the Firestore document with the new reservations array
         await updateDoc(userRef, { reservations: updatedUserReservations });
         await updateDoc(roomsRef, { bookings: updatedReservations });
-    
+
         console.log("Reservation deleted successfully");
         renderPage();
     } catch (error) {
         console.error("Error deleting reservations: ", error);
     }
-}
+};
 
-window.onload = function () {
-    document.getElementById('res-receipts').innerHTML = "<p>Loading.</p>";
-}
+// Initialize Firebase and render the page on load
+window.onload = async function () {
+    document.getElementById('res-receipts').innerHTML = "<p>Loading...</p>";
 
+    try {
+        await initialize(); // Initialize Firebase
+    } catch (error) {
+        console.error("Initialization error:", error);
+        alert("Failed to initialize Firebase. Please try again later.");
+    }
+};

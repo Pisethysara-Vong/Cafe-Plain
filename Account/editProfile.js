@@ -4,13 +4,15 @@ import {getAuth, updatePassword, updateProfile, onAuthStateChanged} from "https:
 import {getFirestore, doc, updateDoc, getDoc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
 import {initializeFirebase} from "/firebaseConfig.js";
 
-
 // Initialize Firebase
-const firebaseConfig = await initializeFirebase();
+let app, auth, db;
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+async function initializeAppAndAuth() {
+    const firebaseConfig = await initializeFirebase(); // Get the Firebase config
+    app = initializeApp(firebaseConfig); // Initialize Firebase app
+    auth = getAuth(app); // Initialize Firebase Auth
+    db = getFirestore(app); // Initialize Firestore database
+}
 
 // Get DOM elements
 const error_messages = document.getElementById('error-messages');
@@ -29,29 +31,53 @@ const eyeIconConfirm = document.getElementById('eye-icon-confirm');
 let base64Image = "";
 let currentUser = null;
 
-// Pre-fill form with current user data
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        currentUser = user;
-        const loggedInUserId = user.uid;
-        const docRef = doc(db, "users", loggedInUserId);
-        getDoc(docRef)
-            .then((docSnap) => {
-                if (docSnap.exists()) {
-                    const userData = docSnap.data();
-                    usernameInput.value = userData.username || ""; // Pre-fill username
-                    emailInput.value = userData.email || ""; // Pre-fill email
-                } else {
-                    console.log("No document found");
+// Function to set up user profile page after Firebase setup
+async function setupProfile() {
+    return new Promise((resolve, reject) => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                const loggedInUserId = user.uid;
+                const docRef = doc(db, "users", loggedInUserId);
+                try {
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        const userData = docSnap.data();
+                        usernameInput.value = userData.username || "";
+                        emailInput.value = userData.email || "";
+                        resolve();
+                    } else {
+                        console.log("No document found");
+                        resolve();
+                    }
+                } catch (error) {
+                    console.error("Error getting document:", error);
+                    reject(error);
                 }
-            })
-            .catch((error) => {
-                console.error("Error getting document:", error);
-            });
-    } else {
-        console.log("No user found");
+            } else {
+                console.log("No user found");
+                resolve();
+            }
+        });
+    });
+}
+
+// Call Firebase initialization and setup profile once Firebase is ready
+async function initializeAppAndRender() {
+    try {
+        await initializeAppAndAuth(); // Wait for Firebase to initialize
+        await setupProfile(); // Wait for profile setup to complete
+    } catch (error) {
+        console.error("Initialization error:", error);
+        alert("Failed to initialize the app. Please try again.");
     }
+}
+
+// Initialize app and handle profile on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', async () => {
+    await initializeAppAndRender(); // Ensure Firebase is initialized before anything else
 });
+
 // Function to upload and change profile picture
 async function changeProfilePicture() {
     const user = auth.currentUser;
@@ -82,6 +108,7 @@ async function changeProfilePicture() {
     fileInput.click(); // Trigger the file input dialog
 }
 
+// Resizes and converts image to base64
 async function resizeAndConvertToBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -175,7 +202,6 @@ confirmBtn.addEventListener("click", async (e) => {
 
             alert("Profile updated successfully!");
             window.location.href = "/Account/profile.html"; // Navigate back to profile page
-            localStorage.setItem('profile', JSON.stringify({}));
         } catch (error) {
             console.error("Error updating profile:", error);
             alert("Failed to update profile. Please try again.");
@@ -183,37 +209,12 @@ confirmBtn.addEventListener("click", async (e) => {
     }
 });
 
-const allInputs = [usernameInput, emailInput, password_input, confirm_password_input].filter(input => input != null);
-
-allInputs.forEach(input => {
-    input.addEventListener('input', () => {
-        if(input.parentElement.classList.contains('incorrect')) {
-            input.parentElement.classList.remove('incorrect');
-        }
-        error_messages.innerText = '';
-    })
-})
-
-function updateToggleButtonVisibility(button, input) {
-    button.style.visibility = input.value ? 'visible' : 'hidden';
-};
-
-updateToggleButtonVisibility(togglePasswordButton, password_input);
-updateToggleButtonVisibility(toggleConfirmPasswordButton, confirm_password_input)
-
-
-password_input.addEventListener('input', () => {
-    updateToggleButtonVisibility(togglePasswordButton, password_input);
-});
-confirm_password_input.addEventListener('input', () => {
-    updateToggleButtonVisibility(toggleConfirmPasswordButton, confirm_password_input);
-});
-
+// Toggle password visibility
 function toggleVisibility(input, icon) {
     const isVisible = input.type === 'text';
     input.type = isVisible ? 'password' : 'text';
     icon.innerHTML = isVisible 
-    ? '<path d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"/>'
+    ? '<path d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"/>' 
     : '<path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"/>';
 }
 

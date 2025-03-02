@@ -1,14 +1,22 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-import { getAuth} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import {initializeFirebase} from "/firebaseConfig.js";
-
+import { getAuth } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { initializeFirebase } from "/firebaseConfig.js";
 
 // Initialize Firebase
-const firebaseConfig = await initializeFirebase();
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+let app, db, auth;
+
+async function initialize() {
+    try {
+        const firebaseConfig = await initializeFirebase(); // Get the Firebase config
+        app = initializeApp(firebaseConfig); // Initialize Firebase app
+        db = getFirestore(app); // Initialize Firestore database
+        auth = getAuth(app); // Initialize Firebase Auth
+    } catch (error) {
+        console.error("Firebase initialization failed:", error);
+        throw new Error("Failed to initialize Firebase. Please try again later.");
+    }
+}
 
 // Set the min date dynamically
 const dateInput = document.getElementById('date-input');
@@ -18,6 +26,17 @@ dateInput.setAttribute('min', today);
 // Handle room availability check
 document.getElementById("reservation-form").addEventListener("submit", async function (event) {
     event.preventDefault();
+
+    // Ensure Firebase is initialized
+    if (!app || !db || !auth) {
+        try {
+            await initialize();
+        } catch (error) {
+            console.error("Firebase initialization error:", error);
+            alert("Failed to initialize Firebase. Please try again later.");
+            return;
+        }
+    }
 
     const date = document.getElementById("date-input").value;
     const timeSlot = document.getElementById("time-input").value;
@@ -95,6 +114,7 @@ document.getElementById("reservation-form").addEventListener("submit", async fun
     }
 });
 
+// Function to book a room
 window.bookRoom = async function (roomId, roomName, date, timeSlot) {
     const user = auth.currentUser;
 
@@ -113,7 +133,8 @@ window.bookRoom = async function (roomId, roomName, date, timeSlot) {
             "14:00-16:00": "02:00 PM - 04:00 PM",
             "16:00-18:00": "04:00 PM - 06:00 PM",
             "18:00-20:00": "06:00 PM - 08:00 PM",
-        }
+        };
+
         // Update room's booking
         const roomRef = doc(db, "reservations", roomId);
         await updateDoc(roomRef, {
@@ -138,16 +159,16 @@ window.bookRoom = async function (roomId, roomName, date, timeSlot) {
         console.error("Error booking room: ", error);
         alert("Failed to book room. Try again.");
     }
-}
+};
 
-const allInputs = [ document.getElementById("date-input"),  document.getElementById("time-input")].filter(input => input != null);
+// Clear error messages when user starts typing
+const allInputs = [document.getElementById("date-input"), document.getElementById("time-input")].filter(input => input != null);
 
 allInputs.forEach(input => {
     input.addEventListener('input', () => {
-        if(input.parentElement.classList.contains('incorrect')) {
+        if (input.parentElement.classList.contains('incorrect')) {
             input.parentElement.classList.remove('incorrect');
         }
         document.getElementById('error-messages').innerText = '';
-    })
-})
-
+    });
+});

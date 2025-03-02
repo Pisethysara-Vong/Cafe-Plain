@@ -6,10 +6,14 @@ import {initializeFirebase} from "/firebaseConfig.js";
 
 
 // Initialize Firebase
-const firebaseConfig = await initializeFirebase();
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+let app, auth, db;
+
+async function initialize() {
+    const firebaseConfig = await initializeFirebase();
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+}
 
 function renderProfile() {
     let profile = JSON.parse(localStorage.getItem('profile')) || {};
@@ -60,6 +64,14 @@ function renderProfile() {
     }
 }
 
-window.onload = function() {
-    renderProfile();
+window.onload = async function() {
+    let profile = JSON.parse(localStorage.getItem('profile')) || {};
+
+    if (Object.keys(profile).length === 0) {
+        await initialize();
+        renderProfile();
+    }
+    else {
+        renderProfile();
+    }
 }
