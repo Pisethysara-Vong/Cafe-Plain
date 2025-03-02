@@ -4,12 +4,12 @@ import {initializeFirebase} from "/firebaseConfig.js";
 
 
 // Initialize Firebase
-async function initialize() {
-    const firebaseConfig = await initializeFirebase()
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+let app, db;
 
-    renderPage(db);
+async function initialize() {
+    const firebaseConfig = await initializeFirebase();
+    app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
 }
 
 const addMenuItems = async () => {
@@ -28,7 +28,7 @@ const addMenuItems = async () => {
     }
 };
 
-const getMenuItems = async (db) => {
+const getMenuItems = async () => {
     try {
         const menuCollection = collection(db, "menu");
         const querySnapshot = await getDocs(menuCollection);
@@ -57,7 +57,7 @@ const renderPage = async (db) => {
     let menuItems;
 
     if (menu.length == 0) {
-        menuItems = await getMenuItems(db);
+        menuItems = await getMenuItems();
         localStorage.setItem('menu', JSON.stringify(menuItems));
     } else {
         menuItems = menu;
@@ -121,6 +121,11 @@ const renderPage = async (db) => {
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    initialize(); // Ensure everything initializes first before rendering
+document.addEventListener('DOMContentLoaded', async () => {
+    let menu = JSON.parse(localStorage.getItem('menu')) || [];
+
+    if (menu.length == 0) {
+        await initialize(); // Ensure everything initializes first before rendering
+    }
+    renderPage()
 });

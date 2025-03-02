@@ -16,58 +16,76 @@ async function initializeFirebase() {
     }
 }
 
+let app, auth, db;
+
 async function initializeAppAndAuth() {
     const firebaseConfig = await initializeFirebase();
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    
-    checkUserSession(auth, db);
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
 }
 
-initializeAppAndAuth();
-
-function checkUserSession(auth, db) {
+function checkUserSession() {
     const account = document.getElementById('account');
     const sign_in = document.getElementById('sign-in');
     const add_new_item = document.getElementById('add-item');
     const profileImg = document.getElementById('profile-sidebar');
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            sign_in.style.display = "none";
+    let isUser = JSON.parse(localStorage.getItem('isUser')) || false;
+    let profile = JSON.parse(localStorage.getItem('profile')) || {};
 
-            const loggedInUserId = user.uid;
-            const docRef = doc(db, "users", loggedInUserId);
-            getDoc(docRef)
-                .then((docSnap) => {
-                    if (docSnap.exists()) {
-                        const userData = docSnap.data();
-                        const username = userData.username;
-                        const profilePic = userData.profilePicture || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541';
-                        
-                        profileImg.src = profilePic;
-                        localStorage.setItem('profile', JSON.stringify({
-                            profilePic, 
-                            username, 
-                            email: userData.email
-                        }));
-                        localStorage.setItem('isUser', JSON.stringify(true));
-                    } else {
-                        console.log("No document found");
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error getting document:", error);
-                });
-        } else {
-            account.style.display = "none";
-            add_new_item.style.display = "none";
-        }
-    });
+    if (isUser === true) {
+        sign_in.style.display = "none";
+        profileImg.src = profile.profilePic || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541'; // Fallback to a default image if none is found
+    }
+    else {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                sign_in.style.display = "none";
+
+                const loggedInUserId = user.uid;
+                const docRef = doc(db, "users", loggedInUserId);
+                getDoc(docRef)
+                    .then((docSnap) => {
+                        if (docSnap.exists()) {
+                            const userData = docSnap.data();
+                            const creationTime = new Date(user.metadata.creationTime).toLocaleString();
+                            const username = userData.username;
+                            const email = userData.email;
+                            const profilePic = userData.profilePicture;
+                            const profileImg = document.getElementById('profile-sidebar');
+
+                            profileImg.src = profilePic || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541'; // Fallback to a default image if none is found
+                            localStorage.setItem('profile', JSON.stringify({profilePic, username, email, creationTime}));
+                            localStorage.setItem('isUser', JSON.stringify(true));
+
+                        } else {
+                            console.log("No document found");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error getting document:", error);
+                    });
+            } 
+            else {
+                account.style.display = "none";
+                add_new_item.style.display = "none"
+            }
+        });
+    }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    let isUser = JSON.parse(localStorage.getItem('isUser')) || false;
+
+    if (isUser === true) {
+        checkUserSession();
+    }
+    else {
+        await initializeAppAndAuth();
+        checkUserSession();
+    }
+
     const logoutBtn = document.querySelector('.logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
