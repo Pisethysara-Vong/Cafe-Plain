@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserLocalPersistence} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js"
 import {getFirestore, setDoc, doc, query, where, getDocs, collection} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
-import {firebaseConfig} from "/firebaseConfig.js";
+import {firebaseConfig} from "firebaseConfig.js";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -94,7 +94,7 @@ form.addEventListener('submit', (e) => {
                         const docRef = doc(db, "users", user.uid);
                         setDoc(docRef, userData)
                             .then(() => {
-                                window.location.href = "/HomePage/index.html";
+                                window.location.href = "HomePage/index.html";
                             })
                             .catch((error) => {
                                 console.error("Error writing document", error);
@@ -123,7 +123,7 @@ form.addEventListener('submit', (e) => {
         signInWithEmailAndPassword(auth, email, password)
         .then(() => {
             showSuccessMessage('Login is successful', 'success-messages');
-            window.location.href = "/HomePage/index.html";
+            window.location.href = "HomePage/index.html";
         })
         .catch((error) => {
             if (error.code == 'auth/user-not-found') {

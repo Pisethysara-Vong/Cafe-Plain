@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import {getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
-import {firebaseConfig} from "/firebaseConfig.js";
+import {firebaseConfig} from "firebaseConfig.js";
 
 
 // Initialize Firebase
@@ -66,7 +66,7 @@ const renderPage = async () => {
 
         menuItems.coffees.forEach((item) => {
             const template = `
-            <a href="OrderingTemplate.html" onclick="clickedItem('${item.name}', '${item.price}', '${item.image}'); event.stopPropagation();">
+            <a href="orderingTemplate.html" onclick="clickedItem('${item.name}', '${item.price}', '${item.image}'); event.stopPropagation();">
                 <div class="container">
                     <div class="image">
                         <img src=${item.image} alt="${item.name}">
@@ -90,7 +90,7 @@ const renderPage = async () => {
 
         menuItems.teas.forEach((item) => {
             const template = `
-            <a href="OrderingTemplate.html" onclick="clickedItem('${item.name}', '${item.price}', '${item.image}'); event.stopPropagation();">
+            <a href="orderingTemplate.html" onclick="clickedItem('${item.name}', '${item.price}', '${item.image}'); event.stopPropagation();">
                 <div class="container">
                     <div class="image">
                         <img src=${item.image} alt="${item.name}">

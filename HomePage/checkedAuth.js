@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import {getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js"
 import {getFirestore, doc, getDoc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
-import {firebaseConfig} from "/firebaseConfig.js";
+import {firebaseConfig} from "firebaseConfig.js";
 
 
 // Initialize Firebase
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn.addEventListener('click', () => {
             signOut(auth)
                 .then(() => {
-                    window.location.href = "/HomePage/index.html";
+                    window.location.href = "HomePage/index.html";
                     localStorage.setItem('profile', JSON.stringify({}));
                     localStorage.setItem('isUser', JSON.stringify(false));
                 })
