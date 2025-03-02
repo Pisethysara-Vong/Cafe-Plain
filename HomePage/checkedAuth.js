@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn.addEventListener('click', () => {
             signOut(auth)
                 .then(() => {
-                    window.location.href = "HomePage/index.html";
+                    window.location.href = "index.html";
                     localStorage.setItem('profile', JSON.stringify({}));
                     localStorage.setItem('isUser', JSON.stringify(false));
                 })
