@@ -1,11 +1,28 @@
-// frontend/firebase-app.js
-async function initializeFirebase() {
-    // Fetch Firebase config from the deployed backend
-    const response = await fetch('/api/firebase-config');
-    const firebaseConfig = await response.json();
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import {getAuth} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js"
+import {getFirestore} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
 
-    // Return the Firebase config
-    return firebaseConfig;
+async function initializeFirebase() {
+    try {
+        const response = await fetch('/api/firebase-config');
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const firebaseConfig = await response.json();
+        console.log("✅ Firebase Config:", firebaseConfig);
+        return firebaseConfig;
+    } catch (err) {
+        console.error("🔥 Fetch Error:", err);
+    }
 }
 
-export {initializeFirebase};
+async function initializeAppAndAuth() {
+    const firebaseConfig = await initializeFirebase();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    
+    checkUserSession(auth, db);
+}
+
+export {initializeAppAndAuth};

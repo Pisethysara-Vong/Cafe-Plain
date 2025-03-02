@@ -1,12 +1,9 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import {getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
-import {initializeFirebase} from "/firebaseConfig.js";
+import {collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
+import {initializeAppAndAuth} from "/firebaseConfig.js";
 
 
 // Initialize Firebase
-const firebaseConfig = await initializeFirebase();
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+initializeAppAndAuth();
 
 const addMenuItems = async () => {
     try {
