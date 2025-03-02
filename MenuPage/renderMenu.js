@@ -3,7 +3,12 @@ import {initializeAppAndAuth} from "/firebaseConfig.js";
 
 
 // Initialize Firebase
-initializeAppAndAuth();
+async function initialize() {
+    await initializeAppAndAuth(); // Wait for Firebase to be initialized before proceeding
+    renderPage(); // Call renderPage only after initialization is complete
+}
+
+initialize();
 
 const addMenuItems = async () => {
     try {
@@ -114,4 +119,6 @@ const renderPage = async () => {
     }
 };
 
-document.addEventListener('DOMContentLoaded', renderPage);
+document.addEventListener('DOMContentLoaded', () => {
+    initialize(); // Ensure everything initializes first before rendering
+});

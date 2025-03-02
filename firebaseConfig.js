@@ -22,7 +22,6 @@ async function initializeAppAndAuth() {
     const auth = getAuth(app);
     const db = getFirestore(app);
     
-    checkUserSession(auth, db);
 }
 
 export {initializeAppAndAuth};
