@@ -1,6 +1,4 @@
 export default function handler(req, res) {
-    console.log("FIREBASE_API_KEY:", process.env.FIREBASE_API_KEY); // Debugging
-
     res.status(200).json({
         apiKey: process.env.FIREBASE_API_KEY || "Not found",
         authDomain: process.env.FIREBASE_AUTH_DOMAIN || "Not found",
