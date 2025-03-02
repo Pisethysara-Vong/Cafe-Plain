@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getFirestore, getDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import {firebaseConfig} from "../firebaseConfig.js";
+import {firebaseConfig} from "/firebaseConfig.js";
 
 
 // Initialize Firebase
@@ -115,6 +115,6 @@ window.removeRoom = async function(roomId, roomName, date, timeSlot) {
 }
 
 window.onload = function () {
-    document.getElementById('res-receipts').innerHTML = "<p>Loading...</p>";
+    document.getElementById('res-receipts').innerHTML = "<p>Loading.</p>";
 }
 

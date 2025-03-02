@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import {getAuth, updatePassword, updateProfile, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js"
 import {getFirestore, doc, updateDoc, getDoc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
-import {firebaseConfig} from "../firebaseConfig.js";
+import {firebaseConfig} from "/firebaseConfig.js";
 
 
 // Initialize Firebase
@@ -117,7 +117,7 @@ changeProfilePictureBtn.addEventListener("click", changeProfilePicture);
 // Event listener for cancel button
 cancelBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    window.location.href = "../Account/profile.html"; // Navigate back to the profile view page
+    window.location.href = "/Account/profile.html"; // Navigate back to the profile view page
 });
 
 confirmBtn.addEventListener("click", async (e) => {
@@ -172,7 +172,7 @@ confirmBtn.addEventListener("click", async (e) => {
             }
 
             alert("Profile updated successfully!");
-            window.location.href = "../Account/profile.html"; // Navigate back to profile page
+            window.location.href = "/Account/profile.html"; // Navigate back to profile page
             localStorage.setItem('profile', JSON.stringify({}));
         } catch (error) {
             console.error("Error updating profile:", error);
