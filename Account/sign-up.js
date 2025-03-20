@@ -44,7 +44,7 @@ function handleScreenChange(e) {
 mediaQuery.addEventListener("change", handleScreenChange);
 
 function initPasswordToggles(input, button, icon) {
-    
+
     const togglePassword = () => {
         const isVisible = input.type === 'text';
         input.type = isVisible ? 'password' : 'text';
