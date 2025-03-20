@@ -356,9 +356,9 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: fixed;
-    left: 520px;
-    transition: 150ms ease;
+    position:absolute;
+    left: 550px;
+    transition: left 300ms ease-in-out, background-color 150ms ease;
 
     svg {
         fill: var(--main-text);

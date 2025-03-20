@@ -217,7 +217,7 @@ main {
     background-color: var(--sidebar-text);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 450px;
+    width: 480px;
     height: 550px;
     padding: 0;
     padding: 20px;
@@ -420,8 +420,8 @@ main {
     align-items: center;
     justify-content: center;
     position: fixed;
-    left: 950px;
-    transition: 150ms ease;
+    left: 1040px;
+    transition: left 300ms ease-in-out, background-color 150ms ease;
 
     svg {
         fill: var(--main-text);
