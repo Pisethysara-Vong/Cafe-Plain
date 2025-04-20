@@ -29,6 +29,10 @@ const error_messages = document.getElementById('error-messages');
 
 
 // Ensure Firebase is initialized before handling form submission
+document.addEventListener('DOMContentLoaded', async () => {
+    await initializeAppAndAuth();
+});
+
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 

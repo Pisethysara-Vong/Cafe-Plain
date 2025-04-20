@@ -1,33 +1,19 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import {getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
+import {getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
 import {initializeFirebase} from "/firebaseConfig.js";
 
 
-// Initialize Firebase
+// Declare Firebase app and Firestore database references
 let app, db;
 
+// Initialize Firebase with config from external file
 async function initialize() {
     const firebaseConfig = await initializeFirebase();
     app = initializeApp(firebaseConfig);
     db = getFirestore(app);
 }
 
-const addMenuItems = async () => {
-    try {
-        const menuCollection = collection(db, "menu");
-
-        // Add coffees
-        await addDoc(menuCollection, { category: "coffees", items: coffees });
-
-        // Add teas
-        await addDoc(menuCollection, { category: "teas", items: teas });
-
-        console.log("Menu items added successfully!");
-    } catch (error) {
-        console.error("Error adding menu items: ", error);
-    }
-};
-
+// Fetch menu items from Firestore
 const getMenuItems = async () => {
     try {
         const menuCollection = collection(db, "menu");
@@ -39,7 +25,7 @@ const getMenuItems = async () => {
             menu[category] = items;
         });
 
-        // Combine coffees and teas into one object
+        // Return a structured object for easy rendering
         const formattedMenu = {
             coffees: menu.coffees || [],
             teas: menu.teas || []
@@ -51,24 +37,25 @@ const getMenuItems = async () => {
     }
 };
 
-const renderPage = async (db) => {
-    
+// Render menu items on the page
+const renderPage = async () => {
     let menu = JSON.parse(localStorage.getItem('menu')) || [];
     let menuItems;
 
-    if (menu.length == 0) {
+    // Fetch from Firestore if not found in localStorage
+    if (menu.length === 0) {
         menuItems = await getMenuItems();
         localStorage.setItem('menu', JSON.stringify(menuItems));
     } else {
         menuItems = menu;
-        console.log("used local storage menu")
+        console.log("used local storage menu");
     }
-
 
     try {
         const coffee = document.getElementById('wrapper1');
         const tea = document.getElementById('wrapper2');
 
+        // Render coffee items
         menuItems.coffees.forEach((item) => {
             const template = `
             <a href="orderingTemplate.html" onclick="clickedItem('${item.name}', '${item.price}', '${item.image}'); event.stopPropagation();">
@@ -78,14 +65,9 @@ const renderPage = async (db) => {
                     </div>
                     <div class="text">
                         <div class="name-price">
-                            <div class="item-name">
-                                ${item.name}
-                            </div>
-                            <div class="item-price">
-                                ${item.price}
-                            </div>
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">${item.price}</div>
                         </div>
-                        <!-- Pass ID and Name as URL parameters -->
                         <button onclick="clickedItem('${item.name}', '${item.price}', '${item.image}')" class="order-btn">+</button>
                     </div>
                 </div>
@@ -93,6 +75,7 @@ const renderPage = async (db) => {
             coffee.insertAdjacentHTML('beforeend', template);
         });
 
+        // Render tea items
         menuItems.teas.forEach((item) => {
             const template = `
             <a href="orderingTemplate.html" onclick="clickedItem('${item.name}', '${item.price}', '${item.image}'); event.stopPropagation();">
@@ -102,33 +85,29 @@ const renderPage = async (db) => {
                     </div>
                     <div class="text">
                         <div class="name-price">
-                            <div class="item-name">
-                                ${item.name}
-                            </div>
-                            <div class="item-price">
-                                ${item.price}
-                            </div>
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">${item.price}</div>
                         </div>
-                        <!-- Pass ID and Name as URL parameters -->
                         <button onclick="clickedItem('${item.name}', '${item.price}', '${item.image}')" class="order-btn">+</button>
                     </div>
                 </div>
             </a>`;
             tea.insertAdjacentHTML('beforeend', template);
         });
+
     } catch (error) {
         console.error("Error rendering page: ", error);
     }
 };
 
+// Wait for DOM to load before starting
 document.addEventListener('DOMContentLoaded', async () => {
     let menu = JSON.parse(localStorage.getItem('menu')) || [];
 
-    if (menu.length == 0) {
-        await initialize();
-        renderPage(); // Ensure everything initializes first before rendering
-    }
-    else {
+    if (menu.length === 0) {
+        await initialize(); // Make sure Firebase is initialized
+        renderPage();
+    } else {
         renderPage();
     }
 });

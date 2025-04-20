@@ -28,6 +28,11 @@ const error_messages = document.getElementById('error-messages');
 let selectedFile = null;
 let base64Image = "";
 
+// Ensure Firebase is initialized before handling form submission
+document.addEventListener('DOMContentLoaded', async () => {
+    await initialize();
+});
+
 // Add image functionality
 async function addImage() {
     // Ensure Firebase is initialized
@@ -186,6 +191,9 @@ document.getElementById('form').addEventListener('submit', async function (event
         document.getElementById('form').reset();
         add_image_btn.style.display = 'block';
         document.getElementById('selected-file-path').style.display = 'none';
+        base64Image = "";
+        selectedFile = null;
+
 
     } catch (error) {
         console.error("Error adding new item: ", error);

@@ -1,20 +1,21 @@
-// Import the functions you need from the SDKs you need
+// Import Firebase modules from CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import {getAuth, updatePassword, updateProfile, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js"
-import {getFirestore, doc, updateDoc, getDoc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"
-import {initializeFirebase} from "/firebaseConfig.js";
+import { getAuth, updatePassword, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+import { getFirestore, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { initializeFirebase } from "/firebaseConfig.js";
 
-// Initialize Firebase
+// Firebase references
 let app, auth, db;
 
+// Initialize Firebase services
 async function initializeAppAndAuth() {
-    const firebaseConfig = await initializeFirebase(); // Get the Firebase config
-    app = initializeApp(firebaseConfig); // Initialize Firebase app
-    auth = getAuth(app); // Initialize Firebase Auth
-    db = getFirestore(app); // Initialize Firestore database
+    const firebaseConfig = await initializeFirebase(); // Get config
+    app = initializeApp(firebaseConfig);               // Init Firebase app
+    auth = getAuth(app);                               // Init Auth
+    db = getFirestore(app);                            // Init Firestore
 }
 
-// Get DOM elements
+// DOM element references
 const error_messages = document.getElementById('error-messages');
 const usernameInput = document.getElementById("username-input");
 const emailInput = document.getElementById("email-input");
@@ -24,18 +25,17 @@ const cancelBtn = document.getElementById("cancel-btn");
 const confirmBtn = document.getElementById("confirm-btn");
 const changeProfilePictureBtn = document.getElementById("change-profile-btn");
 
-
+// Globals
 let base64Image = "";
 let currentUser = null;
 
-// Function to set up user profile page after Firebase setup
+// Load current user's data and populate inputs
 async function setupProfile() {
     return new Promise((resolve, reject) => {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
-                const loggedInUserId = user.uid;
-                const docRef = doc(db, "users", loggedInUserId);
+                const docRef = doc(db, "users", user.uid);
                 try {
                     const docSnap = await getDoc(docRef);
                     if (docSnap.exists()) {
@@ -59,23 +59,23 @@ async function setupProfile() {
     });
 }
 
-// Call Firebase initialization and setup profile once Firebase is ready
+// Initialize Firebase and load profile data
 async function initializeAppAndRender() {
     try {
-        await initializeAppAndAuth(); // Wait for Firebase to initialize
-        await setupProfile(); // Wait for profile setup to complete
+        await initializeAppAndAuth();
+        await setupProfile();
     } catch (error) {
         console.error("Initialization error:", error);
         alert("Failed to initialize the app. Please try again.");
     }
 }
 
-// Initialize app and handle profile on DOMContentLoaded
+// Run setup when DOM is ready
 document.addEventListener('DOMContentLoaded', async () => {
-    await initializeAppAndRender(); // Ensure Firebase is initialized before anything else
+    await initializeAppAndRender();
 });
 
-// Function to upload and change profile picture
+// Handle profile picture change
 async function changeProfilePicture() {
     const user = auth.currentUser;
     if (!user) {
@@ -85,15 +85,13 @@ async function changeProfilePicture() {
 
     const fileInput = document.createElement("input");
     fileInput.type = "file";
-    fileInput.accept = "image/*"; // Allow image files only
+    fileInput.accept = "image/*";
 
     fileInput.addEventListener("change", async (e) => {
         const file = e.target.files[0];
-        if (!file) {
-            return;
-        }
+        if (!file) return;
+
         document.getElementById('selected-file-path').innerText = `Image: ${file.name}`;
-        // Convert image to Base64
         try {
             base64Image = await resizeAndConvertToBase64(file);
         } catch (error) {
@@ -102,10 +100,10 @@ async function changeProfilePicture() {
         }
     });
 
-    fileInput.click(); // Trigger the file input dialog
+    fileInput.click(); // Open file dialog
 }
 
-// Resizes and converts image to base64
+// Resize image and convert to Base64
 async function resizeAndConvertToBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -117,9 +115,9 @@ async function resizeAndConvertToBase64(file) {
 
             img.onload = () => {
                 const canvas = document.createElement("canvas");
-                const maxWidth = 300; // Adjust max width
+                const maxWidth = 300;
                 let scale = maxWidth / img.width;
-                if (scale > 1) scale = 1; // Prevent upscaling
+                if (scale > 1) scale = 1;
 
                 canvas.width = img.width * scale;
                 canvas.height = img.height * scale;
@@ -127,7 +125,7 @@ async function resizeAndConvertToBase64(file) {
                 const ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                resolve(canvas.toDataURL("image/png", 0.7)); // Adjust quality if needed
+                resolve(canvas.toDataURL("image/png", 0.7));
             };
 
             img.onerror = () => reject(new Error("Image failed to load"));
@@ -137,15 +135,16 @@ async function resizeAndConvertToBase64(file) {
     });
 }
 
-// Event listener for changing profile picture
+// Event listener for profile picture change
 changeProfilePictureBtn.addEventListener("click", changeProfilePicture);
 
-// Event listener for cancel button
+// Handle cancel button
 cancelBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    window.location.href = "/Account/profile.html"; // Navigate back to the profile view page
+    window.location.href = "/Account/profile.html";
 });
 
+// Handle confirm/save changes
 confirmBtn.addEventListener("click", async (e) => {
     e.preventDefault();
 
@@ -162,6 +161,7 @@ confirmBtn.addEventListener("click", async (e) => {
     const newPassword = password_input.value;
     const confirmNewPassword = confirm_password_input.value;
 
+    // Validate input
     if (!newUsername) {
         errors.push('Username cannot be empty');
         usernameInput.parentElement.classList.add('incorrect');
@@ -172,11 +172,12 @@ confirmBtn.addEventListener("click", async (e) => {
         confirm_password_input.parentElement.classList.add('incorrect');
     }
 
+    // Show validation errors if any
     if (errors.length > 0) {
         error_messages.innerText = errors.join('\n');
     } else {
         try {
-            // Update username
+            // Update display name in Auth and Firestore
             if (newUsername && newUsername !== user.displayName) {
                 await updateProfile(currentUser, { displayName: newUsername });
                 const docRef = doc(db, "users", currentUser.uid);
@@ -188,21 +189,18 @@ confirmBtn.addEventListener("click", async (e) => {
                 await updatePassword(currentUser, newPassword);
             }
 
-            // Update profile picture if a new file is selected
+            // Save profile picture to Firestore
             if (base64Image) {
-                // Store the Base64 image in Firestore
                 const docRef = doc(db, "users", currentUser.uid);
                 await updateDoc(docRef, { profilePicture: base64Image });
-
                 console.log("Profile picture updated in Firestore:", base64Image);
             }
 
             alert("Profile updated successfully!");
-            window.location.href = "/Account/profile.html"; // Navigate back to profile page
+            window.location.href = "/Account/profile.html";
         } catch (error) {
             console.error("Error updating profile:", error);
             alert("Failed to update profile. Please try again.");
         }
     }
 });
-

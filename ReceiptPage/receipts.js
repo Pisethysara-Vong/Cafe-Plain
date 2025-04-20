@@ -1,10 +1,11 @@
 
 let receipts = JSON.parse(localStorage.getItem('receipts')) || [];
 
-
+// Display the receipts on the page
 function displayReceipts() {
     const main = document.getElementById('main')
 
+    // If no history, show "No receipts" message with dropdown menu
     if (receipts.length == 0) {
         const emptyReceipts = `
             <h2>
@@ -33,11 +34,13 @@ function displayReceipts() {
     }
 
     else {
+        // Loop through each receipt and display its details
         receipts.forEach((receipt, index) => {
             let orderNumber = index + 1;
             let receiptDetailsHTML = '';
             let total = 0;
             
+            // Build list items for each drink in the order
             receipt.forEach(item => {
                 let { name, price, quantity, size, ice, sugar } = item;
                 total += price * quantity;
@@ -50,6 +53,7 @@ function displayReceipts() {
                 `;
             });
     
+            // Create and insert the full receipt block into the page
             let receiptHTML = `
                 <div class="receipt">
                     <div class="order-number">
@@ -68,15 +72,18 @@ function displayReceipts() {
             main.insertAdjacentHTML('beforeend', receiptHTML);
         });
     }
+    // Enable dropdown functionality for "more" menu
     addDropdownToggleListener();
 }
 
+// Clear receipts from memory and UI
 function clearReceipts() {
     receipts = []; // Clear the cart array
     localStorage.setItem('receipts', JSON.stringify(receipts)); // Update localStorage
     displayReceipts(); // Re-render the cart
 }
 
+// Add toggle behavior for dropdown menu
 function addDropdownToggleListener() {
     let btn = document.querySelector(".more-dropdown-btn");
     let moreDropdownList = document.querySelector(".more-dropdown-list");
@@ -89,6 +96,7 @@ function addDropdownToggleListener() {
         });
     }
 
+    // Close dropdown if user clicks anywhere else
     window.addEventListener("click", () => {
         moreDropdownList?.classList.remove("active");
         btn?.classList.remove("active");
@@ -96,7 +104,7 @@ function addDropdownToggleListener() {
 }
 
 
-// Call the function to display orders
+// Load receipts when the page is ready
 window.onload = function() {
     displayReceipts();
 };

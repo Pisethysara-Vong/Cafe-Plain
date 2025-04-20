@@ -1,23 +1,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { initializeFirebase } from "/firebaseConfig.js";
 
-async function initializeFirebase() {
-    try {
-        const response = await fetch('/api/firebase-config');
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const firebaseConfig = await response.json();
-        console.log("✅ Firebase Config:", firebaseConfig);
-        return firebaseConfig;
-    } catch (err) {
-        console.error("🔥 Fetch Error:", err);
-    }
-}
 
+// Firebase app, auth, and db references
 let app, auth, db;
 
+// Initialize Firebase app, auth, and Firestore
 async function initializeAppAndAuth() {
     const firebaseConfig = await initializeFirebase();
     app = initializeApp(firebaseConfig);
@@ -25,67 +15,58 @@ async function initializeAppAndAuth() {
     db = getFirestore(app);
 }
 
+// Check if the user is logged in and update UI accordingly
 function checkUserSession() {
     const account = document.getElementById('account');
-    const sign_in = document.getElementById('sign-in');
-    const add_new_item = document.getElementById('add-item');
+    const signInBtn = document.getElementById('sign-in');
+    const addNewItem = document.getElementById('add-item');
     const profileImg = document.getElementById('profile-sidebar');
 
     let isUser = JSON.parse(localStorage.getItem('isUser')) || false;
     let profile = JSON.parse(localStorage.getItem('profile')) || {};
 
     if (isUser === true) {
-        sign_in.style.display = "none";
-        profileImg.src = profile.profilePic || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541'; // Fallback to a default image if none is found
-    }
-    else {
+        signInBtn.style.display = "none";
+        profileImg.src = profile.profilePic || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541';
+    } else {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                sign_in.style.display = "none";
+                signInBtn.style.display = "none";
 
-                const loggedInUserId = user.uid;
-                const docRef = doc(db, "users", loggedInUserId);
+                const docRef = doc(db, "users", user.uid);
                 getDoc(docRef)
                     .then((docSnap) => {
                         if (docSnap.exists()) {
                             const userData = docSnap.data();
-                            const creationTime = new Date(user.metadata.creationTime).toLocaleString();
-                            const username = userData.username;
-                            const email = userData.email;
                             const profilePic = userData.profilePicture;
-                            const profileImg = document.getElementById('profile-sidebar');
+                            const profileData = {
+                                username: userData.username,
+                                email: userData.email,
+                                profilePic: profilePic,
+                                creationTime: new Date(user.metadata.creationTime).toLocaleString()
+                            };
 
-                            profileImg.src = profilePic || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541'; // Fallback to a default image if none is found
-                            localStorage.setItem('profile', JSON.stringify({profilePic, username, email, creationTime}));
+                            profileImg.src = profilePic || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541';
+
+                            localStorage.setItem('profile', JSON.stringify(profileData));
                             localStorage.setItem('isUser', JSON.stringify(true));
-
                         } else {
-                            console.log("No document found");
+                            console.log("No user document found.");
                         }
                     })
                     .catch((error) => {
-                        console.error("Error getting document:", error);
+                        console.error("Error fetching user document:", error);
                     });
-            } 
-            else {
+            } else {
                 account.style.display = "none";
-                add_new_item.style.display = "none"
+                addNewItem.style.display = "none";
             }
         });
     }
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-    let isUser = JSON.parse(localStorage.getItem('isUser')) || false;
-
-    if (isUser === true) {
-        checkUserSession();
-    }
-    else {
-        await initializeAppAndAuth();
-        checkUserSession();
-    }
-
+// Handle logout
+function setupLogoutButton() {
     const logoutBtn = document.querySelector('.logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
@@ -101,8 +82,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 });
         });
     }
-});
+}
 
+// Clear cached menu when page is closed or navigated away
 const clearMenuOnClose = () => {
     localStorage.setItem('menu', JSON.stringify([]));
 };
@@ -111,4 +93,16 @@ window.addEventListener('pagehide', (event) => {
     if (!event.persisted) {
         clearMenuOnClose();
     }
+});
+
+// Initialize everything once DOM is loaded
+document.addEventListener('DOMContentLoaded', async () => {
+    const isUser = JSON.parse(localStorage.getItem('isUser')) || false;
+
+    if (!isUser) {
+        await initializeAppAndAuth();
+    }
+
+    checkUserSession();
+    setupLogoutButton();
 });

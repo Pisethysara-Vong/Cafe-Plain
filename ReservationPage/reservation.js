@@ -18,6 +18,11 @@ async function initialize() {
     }
 }
 
+// Ensure Firebase is initialized before handling form submission
+document.addEventListener('DOMContentLoaded', async () => {
+    await initialize();
+});
+
 // Set the min date dynamically
 const dateInput = document.getElementById('date-input');
 const today = new Date().toISOString().split('T')[0];
@@ -84,10 +89,24 @@ document.getElementById("reservation-form").addEventListener("submit", async fun
 
         roomsList.innerHTML = ""; // Clear previous results
 
+        // Filter available rooms by checking if the selected date and time slot are not already booked
         const availableRooms = snapshot.docs.filter(doc => {
             const bookings = doc.data().bookings;
+
+            // Return true only if NONE of the existing bookings match the selected date and time
             return !bookings.some(booking => booking.date === date && booking.time === timeSlot);
+
+            /*
+                Explanation:
+                - bookings.some(...) checks if any existing booking for this room
+                matches the selected date AND time slot.
+                - If a match is found, it means the room is already booked → .some(...) returns true
+                - The ! (NOT) operator inverts that:
+                    → If .some(...) returns false (no conflict), then !false = true → keep the room
+                    → If .some(...) returns true (conflict), then !true = false → skip the room
+            */
         });
+
 
         if (availableRooms.length === 0) {
             roomsList.innerHTML = "<p>No available rooms for this time slot.</p>";
