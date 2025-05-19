@@ -45,4 +45,3 @@ if (mediaQuery.matches) {
 
 mediaQuery.addEventListener("change", handleScreenChange);
 
-console.log(process.env.FIREBASE_API_KEY,);

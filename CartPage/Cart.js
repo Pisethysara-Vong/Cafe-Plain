@@ -67,6 +67,13 @@ function clearCart() {
 
 // Function to handle checkout
 function checkout() {
+    let isUser = JSON.parse(localStorage.getItem('isUser')) || false;
+
+    if (isUser !== true) {
+        alert("Requires Account to checkout.");
+        return;
+    }
+
     receipts.push(cart);
     localStorage.setItem('receipts', JSON.stringify(receipts));
 
