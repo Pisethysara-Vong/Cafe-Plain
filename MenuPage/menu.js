@@ -12,64 +12,48 @@ function clearLocalStorage(){
 }
 
 const sideBar = document.getElementById('sidebar');
-const profile = document.getElementById('profile-img');
 const mediaQuery = window.matchMedia("(max-width: 800px)");
-const mediaQuery2 = window.matchMedia("(max-width: 1500px)");
 
-
-function toggleSubMenu(button){
+function toggleSubMenu(button) {
     let isUser = JSON.parse(localStorage.getItem('isUser')) || false;
 
     if (isUser !== true) {
-        alert("Requires Account to access.")
+        alert("Requires Account to access.");
         return;
     }
-    if (!button.nextElementSibling.classList.contains('show')){
+
+    if (!button.nextElementSibling.classList.contains('show')) {
         closeAllSubMenus();
     }
     button.nextElementSibling.classList.toggle('show');
     button.classList.toggle('rotate');
 
-    if (sideBar.classList.contains('close')){
+    if (sideBar.classList.contains('close')) {
         toggleSideBar();
     }
 }
 
-function toggleSideBar(){
+function toggleSideBar() {
     closeAllSubMenus();
     sideBar.classList.toggle('close');
-
-    if (mediaQuery2) {
-        if (!sideBar.classList.contains('close')) {
-            const wrappers = document.getElementsByClassName('wrapper');
-            
-            // Loop through all elements with the "wrapper" class
-            for (let wrapper of wrappers) {
-                wrapper.style.columnGap = '78px'; // Correct property is columnGap
-            }
-        }
-        if (sideBar.classList.contains('close')) {
-            const wrappers = document.getElementsByClassName('wrapper');
-            
-            // Loop through all elements with the "wrapper" class
-            for (let wrapper of wrappers) {
-                wrapper.style.columnGap = '44px'; // Correct property is columnGap
-            }
-        }
-    }
 }
 
-function closeAllSubMenus(){
+function closeAllSubMenus() {
     Array.from(sideBar.getElementsByClassName('show')).forEach(dropDown => {
         dropDown.classList.remove('show');
         dropDown.previousElementSibling.classList.remove('rotate');
-    })
+    });
 }
 
 function handleScreenChange(e) {
     if (e.matches && sideBar.classList.contains('close')) {
         toggleSideBar();
     }
+}
+
+// Trigger sidebar toggle on page load if max-width is 800px or lower
+if (mediaQuery.matches) {
+    toggleSideBar();
 }
 
 mediaQuery.addEventListener("change", handleScreenChange);
