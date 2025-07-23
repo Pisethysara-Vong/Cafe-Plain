@@ -442,7 +442,7 @@ body {
         grid-template-columns: 1fr;
     }
     main {
-        padding: 2em 1em 60px 1em;
+        padding: 0em 0em 60px 0em;
     }
     .container {
         border: none;
@@ -457,6 +457,7 @@ body {
         position: fixed;
         top: unset;
         bottom: 0;
+        z-index: 1000;
 
         >ul {
             padding: 0;
@@ -487,7 +488,6 @@ body {
             display: block;
         }
         
-
         ul li .sub-menu.show {
             position: fixed;
             bottom: 60px;
